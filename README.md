@@ -1,15 +1,13 @@
 # moRFeus_Qt
 
 GUI tool for controlling moRFeus mixer/RF generator
-on a Windows machine via the HID protocol.
-
-(Linux support in testing)
+on a Windows/Linux machine via the HID protocol.
 
 Product information : https://outernet.is/pages/morfeus
 
-This tool was written in Python using :
+This tool was written in Python3 using :
 
-hidapi : https://github.com/trezor/cython-hidapi
+hidapi(RAW) : https://github.com/trezor/cython-hidapi
 
 PyQt4  : http://pyqt.sourceforge.net/Docs/PyQt4/
 
@@ -20,43 +18,47 @@ Installation
 
 `Download Python 3`
 
+https://www.python.org/downloads/release/python-365/
+
 `Download PyQt4`
 
-https://download.lfd.uci.edu/pythonlibs/u2yrk7ps/PyQt4-4.11.4-cp36-cp36m-win32.whl`
+https://download.lfd.uci.edu/pythonlibs/u2yrk7ps/PyQt4-4.11.4-cp36-cp36m-win_amd64.whl
 
 In the command line navigate to download directory:
 
-`pip install hidapi`
+`$ pip3 install --user hidapi`
 
-`pip install PyQt4-4.11.4-cp36-cp36m-win32.whl`
+`$ pip3 install --user PyQt4-4.11.4-cp36-cp36m-win_amd64.whl`
 
 
 #### For Linux:
 
-`sudo -H apt install python-pip`
+`$ sudo -H apt install python3-pip`
 
-`sudo -H apt install python-qt4`
+##### Build hidapi from source when at step 3 opt for hidraw API instead of libusb:
 
-`sudo -H apt-get install python-dev libusb-1.0-0-dev libudev-dev`
+`$ python setup.py build --without-libusb`
 
-`pip install hidapi`
+`$ sudo -H apt install python-qt4`
+
+`$ sudo -H pip3 install --user hidapi`
 
 Usage
 =====
 Application does not run when the device hasn't been connected.
 #### Windows
-`start pythonw moRFeus.pyw`
+`$ start pythonw moRFeus.pyw`
 
-moRFeus_Qt:
+Windows - moRFeus_Qt:
 
 ![alt text][moRFeus]
 
 [moRFeus]: ./MoRFeus_Qt.PNG "moRFeus_Qt"
 
 #### Linux
-`sudo python moRFeus.py`
+`$ sudo python moRFeus.py`
 
-moRFeus_Qt:
+Ubuntu - moRFeus_Qt:
 
 ![alt text][moRFeusLinux]
 

@@ -1,59 +1,22 @@
 # moRFeus python script for interfacing directly via the HID protocol
 from __future__ import print_function
-from PyQt4      import QtCore, QtGui, uic
 
 import hid
 import os
 import sys
 import time
 
-# I have not bothered to implement the get Functions from the moRFeus tool, since it doesn't really serve a purpose
-# since there seems to be a LED screen, ya know. . .
+from PyQt4      import QtCore, QtGui, uic
+from threading  import Thread
+from moRFeusClass import moRFeus
+from moRFeus_morse import morseCode
 
-def int_to_bytes(value, length):                                                # Convert integer(input) value to an length(8) byte sized array
-    result = []                                                                 # to be used for inserting our custom array starting at
-    for i in range(0, length):                                                  # setFreq[3] to setFreq[10]
-        result.append(int(value) >> (i * 8) & 0xff)
-    result.reverse()
-    return result                                                               # return the result
-
-def initMoRFeus():                                                              # init routine for moRFeus
-    device = hid.device()
-    device.open(0x10c4, 0xeac9)                                                 # moRFeus VendorID/ProductID
-    return device
-
-def freqRange(start,end,step):                                                  # loop for moving upward in frequency (increases with step)
-    while start <= end:
-        yield start
-        start += step
-
-def freqRangeReverse(start,end,step):                                           # loop for moving downward in frequency (descreases with step)
-    while end >= start:
-        yield end
-        end -= step
-
-class moRFeus(object):
-    # Constants
-    LOmax        = 5400000000                                                       # Local Oscillator max (5400MHz)
-    LOmin        = 85000000                                                         # Local Oscillator min (85Mhz)
-    mil          = 1000000                                                          # Saves some zero's here and there
-    # Byte Arrays known to the moRFeus device
-    readReg      = [0, 114, 0, 0, 0, 0, 0, 0, 0, 190, 250, 0, 0, 96, 0, 0, 0]       # heh?
-    setGen       = [0, 119, 130, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]          # Generator mode
-    setMix       = [0, 119, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]          # Mixer mode
-    biasOn       = [0, 119, 132, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]          # BiasTee on
-    biasOff      = [0, 119, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]          # BiasTee off
-    whiteNoise   = [0, 119, 129, 0, 0, 0, 1, 65, 221, 118, 0, 96, 0, 0, 2, 31, 0]   # setFrequency to 5400 000 000 Hz
-
-    setCurrent   = [0, 119, 131, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]          # setCurrent bytearray template
-    setCur       = bytearray(setCurrent)                                            # we declare it a bytearray for manipulation of setCur[x]
-                                                                                    # with our custom 8byte current array
-    setFrequency = [0, 119, 129, 0, 0, 0, 1, 65, 221, 118, 0, 96, 0, 0, 2, 31, 0]   # setFrequency bytearray template
-    setFreq      = bytearray(setFrequency)                                          # we declare it a bytearray for manipulation of setFreq[x]
-                                                                                    # with our custom 8byte frequency array
+moRFeusCMD = moRFeus()
 Ui_MainWindow, QtBaseClass = uic.loadUiType('morfeus_pyqt.ui')
+
 class moRFeusQt(QtGui.QMainWindow, Ui_MainWindow):
     def __init__(self):
+        super(moRFeusQt, self).__init__()
         QtGui.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
@@ -66,80 +29,151 @@ class moRFeusQt(QtGui.QMainWindow, Ui_MainWindow):
         self.biasoff.clicked.connect(self.biasOffQt)
         self.powerInput.valueChanged.connect(self.curQt)
         self.startfreq.valueChanged.connect(self.statfreqQt)
+        self.morsebutton.clicked.connect(self.sendMorse)
 
+    # Convert integer(input) value to an length(8) byte sized array
+    # to be used for inserting our custom array starting at
+    # setFreq[3] to setFreq[10]
+    def int_to_bytes(self,value, length):
+        result = []
+        for i in range(0, length):
+            result.append(int(value) >> (i * 8) & 0xff)
+        result.reverse()
+        # return the result
+        return result
+
+    # init routine for moRFeus
+    def initMoRFeus(self):
+        while True:
+            try:
+                device = hid.device()
+                # moRFeus VendorID/ProductID
+                device.open(0x10c4, 0xeac9)
+                return device
+                break
+            except IOError:
+                print('No moRFeus found... Retrying in 3 seconds')
+                time.sleep(3)
+
+        # loop for moving upward in frequency (increases with step)
+    def freqRange(self,start,end,step):
+        while start <= end:
+            yield start
+            start += step
+
+     # loop for moving downward in frequency (descreases with step)
+    def freqRangeReverse(self,start,end,step):
+        while end >= start:
+            yield end
+            end -= step
+
+    # The close event
     def closeEvent(self, event):
-        # here you can terminate your threads and do other stuff
         device.close()
-        # and afterwards call the closeEvent of the super-class
         super(QtGui.QMainWindow, self).closeEvent(event)
 
+    # Setting of the device biasTee On
     def biasOnQt(self):
-        device.write(moRFeus.biasOn)
+        device.write(moRFeusCMD.biasOn)
 
+    # Setting of the device biasTee Off
     def biasOffQt(self):
-        device.write(moRFeus.biasOff)
+        device.write(moRFeusCMD.biasOff)
 
-    def curQt(self,):
+    # Setting of the device current
+    def curQt(self):
         cur = self.powerInput.value()
         for x in range(3,11):
-            moRFeus.setCur[x] = cur
-        device.write(moRFeus.setCur)
+            moRFeusCMD.setCur[x] = cur
+        device.write(moRFeusCMD.setCur)
 
-    def statfreqQt(self):                                                       # setFrequency for cmdline applet, mixer mode which only uses a static frequency
+    # setFrequency for Qt applet,
+    # mixer/generator mode which only uses a static frequency
+    def statfreqQt(self):
         sFreq = self.startfreq.value()
-        freq = int(sFreq * moRFeus.mil)
-        input_array = int_to_bytes(freq,8)
+        freq = int(sFreq * moRFeusCMD.mil)
+        input_array = self.int_to_bytes(freq,8)
         for x in range(3,11):
-            moRFeus.setFreq[x] = input_array[x-3]
-        device.write(moRFeus.setFreq)
+            moRFeusCMD.setFreq[x] = input_array[x-3]
+        device.write(moRFeusCMD.setFreq)
 
-    def genQt(self):                                                            # Generator static frequency
-        device.write(moRFeus.setGen)
+    # Set moRFeus to generator mode
+    # Generator static frequency
+    def genQt(self):
+        device.write(moRFeusCMD.setGen)
         self.curQt()
         self.statfreqQt()
 
-    def mixQt(self):                                                            # Mixer static frequency
-        device.write(moRFeus.setMix)
+    # Set moRFeus to mixer mode
+    # Mixer static frequency
+    def mixQt(self):
+        device.write(moRFeusCMD.setMix)
         self.curQt()
         self.statfreqQt()
 
+    # Set to max LO to create noise
     def noiseQt(self):
-        device.write(moRFeus.setGen)
+        device.write(moRFeusCMD.setGen)
         self.curQt()
-        device.write(moRFeus.whiteNoise)
+        device.write(moRFeusCMD.whiteNoise)
 
-    def sweepQt(self):
+    # Frequency sweep routine, still needs a means to break out of
+    # loop on some event..
+    # Set the frequency range for the sweep feature
+    # this will loop until the timeout or cancel key is pressed
+    def sweepQt(self,event):
         startFreq = self.startfreq.value()
-        startFreq = int(startFreq * moRFeus.mil)
+        startFreq = int(startFreq * moRFeusCMD.mil)
         endFreq = self.endfreq.value()
-        endFreq = int(endFreq * moRFeus.mil)
+        endFreq = int(endFreq * moRFeusCMD.mil)
         step  = self.stepInput.value()
         t_end = time.time() + self.time.value()
         step = int(step * 1000)
         delay = self.delay.value()
         # hops = abs(end - start)/step
-        device.write(moRFeus.setGen)
+        device.write(moRFeusCMD.setGen)
         self.curQt()
-        while time.time() < t_end:                                              # Set the frequency range for the sweep feature
-            for x in freqRange(startFreq,endFreq,step):                         # this will loop until the timeout or cancel key is pressed
-                input_array = int_to_bytes(x,8)
-                for y in range(3,11):
-                    moRFeus.setFreq[y] = input_array[y-3]                       # The y-3 offset is for the start position[0] of the input_array(i_a)
-                device.write(moRFeus.setFreq)                                   # to be placed inside of the setFreq array at y(3) offset
-                time.sleep(delay/1000)                                          # example to be clear : i_a[0-7] a 8 byte array gets placed inside the
-            for x in freqRangeReverse(startFreq,endFreq,step):                  # setFreq[0, 119, 129, i_a[0], i_a[1], i_a[2], i_a[3], i_a[4], i_a[5], i_a[6], i_a[7], 96, 0, 0, 2, 31, 0]
-                input_array = int_to_bytes(x,8)
+        condition = time.time() < t_end
+        while condition:
+            for x in self.freqRange(startFreq,endFreq,step):
+                input_array = self.int_to_bytes(x,8)
+                # The y-3 offset is for the start position[0] of the input_array(i_a)
+                # to be placed inside of the setFreq array at y(3) offset
+                # example to be clear : i_a[0-7] a 8 byte array gets placed inside the
+                # setFreq[0, 119, 129, i_a[0], i_a[1], i_a[2], i_a[3], i_a[4], i_a[5], i_a[6], i_a[7], 96, 0, 0, 2, 31, 0] array
                 for y in range(3,11):
                     moRFeus.setFreq[y] = input_array[y-3]
-                device.write(moRFeus.setFreq)
+                device.write(moRFeusCMD.setFreq)
                 time.sleep(delay/1000)
-                break
+            for x in self.freqRangeReverse(startFreq,endFreq,step):
+                input_array = self.int_to_bytes(x,8)
+                for y in range(3,11):
+                    moRFeus.setFreq[y] = input_array[y-3]
+                device.write(moRFeusCMD.setFreq)
+                time.sleep(delay/1000)
+            break
 
+    # Sending of morse code via current switch, 0 is off 1 is on
+    def sendMorse(self):
+        while True:
+            morse = morseCode()
+            morseInput = self.morseInput.text()
+            for letter in morseInput:
+                for symbol in morse.MORSE[letter.upper()]:
+                    if symbol == '-':
+                        morse.dash(device)
+                    else:
+                        if symbol == '.':
+                            morse.dot(device)
+                        else:
+                            time.sleep(0.5)
+                time.sleep(0.5)
+            break
 
 if __name__ == '__main__':
 # main program
-    device = initMoRFeus()
     app = QtGui.QApplication(sys.argv)
     window = moRFeusQt()
+    device = window.initMoRFeus()
     window.show()
     sys.exit(app.exec_())

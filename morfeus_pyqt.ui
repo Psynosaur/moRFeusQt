@@ -6,18 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>293</width>
-    <height>297</height>
+    <width>369</width>
+    <height>269</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>369</width>
+    <height>269</height>
+   </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>300</width>
-    <height>297</height>
+    <width>369</width>
+    <height>287</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>moRFeusQt</string>
+   <string>moRFeus_Qt</string>
   </property>
   <widget class="QWidget" name="moRFeus">
    <property name="enabled">
@@ -25,14 +31,14 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>293</width>
-     <height>252</height>
+     <width>369</width>
+     <height>250</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
-     <width>330</width>
-     <height>280</height>
+     <width>369</width>
+     <height>250</height>
     </size>
    </property>
    <widget class="QLabel" name="startlabel">
@@ -129,10 +135,10 @@
      </rect>
     </property>
     <property name="decimals">
-     <number>3</number>
+     <number>4</number>
     </property>
     <property name="minimum">
-     <double>1.000000000000000</double>
+     <double>0.001000000000000</double>
     </property>
     <property name="maximum">
      <double>50000.000000000000000</double>
@@ -208,134 +214,8 @@
      <number>7</number>
     </property>
     <property name="value">
-     <number>4</number>
+     <number>1</number>
     </property>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>186</y>
-      <width>271</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
-     </property>
-     <property name="spacing">
-      <number>5</number>
-     </property>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="genbutton">
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Gen</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="biasoff">
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Bias Off</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="biason">
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Bias On</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mixbutton">
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Mixer</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="noisebutton">
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Noise</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="sweepbutton">
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Sweep</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
    <widget class="QSpinBox" name="time">
     <property name="geometry">
@@ -411,6 +291,186 @@
      <number>1</number>
     </property>
    </widget>
+   <widget class="QPushButton" name="noisebutton">
+    <property name="geometry">
+     <rect>
+      <x>285</x>
+      <y>70</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>80</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Noise</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>193</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Morse Code</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="morsebutton">
+    <property name="geometry">
+     <rect>
+      <x>285</x>
+      <y>190</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Send Msg</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="biason">
+    <property name="geometry">
+     <rect>
+      <x>285</x>
+      <y>130</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>80</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Bias On</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="genbutton">
+    <property name="geometry">
+     <rect>
+      <x>285</x>
+      <y>40</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>80</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Gen</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="biasoff">
+    <property name="geometry">
+     <rect>
+      <x>285</x>
+      <y>160</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>80</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Bias Off</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="sweepbutton">
+    <property name="geometry">
+     <rect>
+      <x>285</x>
+      <y>100</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>80</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Sweep</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="mixbutton">
+    <property name="geometry">
+     <rect>
+      <x>285</x>
+      <y>10</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>80</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Mixer</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="morseInput">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>190</y>
+      <width>161</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="font">
@@ -424,8 +484,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>293</width>
-     <height>23</height>
+     <width>369</width>
+     <height>19</height>
     </rect>
    </property>
    <property name="font">
@@ -453,7 +513,12 @@
   </action>
   <action name="actionVersion_0_370">
    <property name="text">
-    <string>Version 0.369</string>
+    <string>Version 0.669</string>
+   </property>
+  </action>
+  <action name="actionMessenger">
+   <property name="text">
+    <string>Messenger</string>
    </property>
   </action>
  </widget>
@@ -466,10 +531,11 @@
   <tabstop>delay</tabstop>
   <tabstop>mixbutton</tabstop>
   <tabstop>genbutton</tabstop>
-  <tabstop>biason</tabstop>
-  <tabstop>biasoff</tabstop>
   <tabstop>noisebutton</tabstop>
   <tabstop>sweepbutton</tabstop>
+  <tabstop>biason</tabstop>
+  <tabstop>biasoff</tabstop>
+  <tabstop>morsebutton</tabstop>
  </tabstops>
  <resources/>
  <connections/>
