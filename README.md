@@ -33,7 +33,11 @@ In the command line navigate to download directory:
 
 #### For Linux:
 
+#### There seems to be a error running this app on X-Server :
+
 `$ sudo -H apt install python3-pip`
+
+`$ sudo -H apt install libudev-dev`
 
 ##### Build hidapi from source when at step 3 opt for hidraw API instead of libusb:
 
@@ -42,6 +46,26 @@ In the command line navigate to download directory:
 `$ sudo -H apt install python-qt4`
 
 `$ sudo -H pip3 install --user hidapi`
+
+##### To remove the root requirement when accessing the raw hidapi
+
+Inside one of the rules files in /etc/udev/rules.d/
+
+Add this line :
+
+`SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", MODE="0664", GROUP="plugdev"`
+
+Then add yourself to the plugdev group.
+
+`$ sudo adduser username plugdev`
+
+Reload udev to reflect changes
+
+`$ sudo udevadm control --reload`
+
+`$ sudo udevadm trigger`
+
+`$ chmod +x moRFeus.py`
 
 Usage
 =====
@@ -56,7 +80,7 @@ Windows - moRFeus_Qt:
 [moRFeus]: ./MoRFeus_Qt.PNG "moRFeus_Qt"
 
 #### Linux
-`$ sudo python moRFeus.py`
+`$ ./moRFeus.py`
 
 Ubuntu - moRFeus_Qt:
 

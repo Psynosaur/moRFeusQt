@@ -3,7 +3,7 @@ from __future__ import print_function
 # pip install hidapi
 import hid
 import os
-import msvcrt
+#import msvcrt
 import sys
 import time
 

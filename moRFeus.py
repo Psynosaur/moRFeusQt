@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # moRFeus python script for interfacing directly via the HID protocol
+
 from __future__ import print_function
 
 import hid
