@@ -1,14 +1,17 @@
+#!/usr/bin/env python
 # moRFeus python script for interfacing directly via the HID protocol
 from __future__ import print_function
 
-import hid
+import usb.core
+import usb.util
 import os
 import sys
 import time
 
 from PyQt4      import QtCore, QtGui, uic
 from threading  import Thread
-from moRFeusClass import moRFeus
+sys.path.append('./../')
+from moRFeus_class import moRFeus
 from moRFeus_morse import morseCode
 
 moRFeusCMD = moRFeus()
@@ -46,9 +49,11 @@ class moRFeusQt(QtGui.QMainWindow, Ui_MainWindow):
     def initMoRFeus(self):
         while True:
             try:
-                device = hid.device()
-                # moRFeus VendorID/ProductID
-                device.open(0x10c4, 0xeac9)
+                # find our device
+                device = usb.core.find(idVendor=0x10c4, idProduct=0xeac9)
+                # was it found?
+                if device is None:
+                    raise ValueError('Device not found')
                 return device
                 break
             except IOError:

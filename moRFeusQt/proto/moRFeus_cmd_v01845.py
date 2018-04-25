@@ -7,11 +7,11 @@ import os
 import sys
 import time
 
-sys.path.append('./../')
-from moRFeus_morse import morseCode
-from moRFeusClass import moRFeus
+# sys.path.append('./../')
+# from moRFeus_morse import morseCode
+from moRFeusQt import moRFeus_class
 
-moRF = moRFeus()
+moRF = moRFeus_class.moRFeus()
 class moRFeusCmd(object):
 
     def int_to_bytes(self,value, length):                                       # Convert integer(input) value to an length(8) byte sized array
@@ -36,7 +36,7 @@ class moRFeusCmd(object):
         device.open(0x10c4, 0xeac9)                                             # moRFeus VendorID/ProductID
         print("MoRFeus opened")
         # enable non-blocking mode
-        # device.set_nonblocking(0)
+        device.set_nonblocking(0)
         return device
 
     def closeMoRFeus(self,device):                                              # close routine for moRFeus

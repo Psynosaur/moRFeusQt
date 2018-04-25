@@ -7,83 +7,98 @@ Product information : https://outernet.is/pages/morfeus
 
 This tool was written in Python3 using :
 
-hidapi(RAW) : https://github.com/trezor/cython-hidapi
+1. ##### hidapi :
 
-PyQt4  : http://pyqt.sourceforge.net/Docs/PyQt4/
+       https://github.com/trezor/cython-hidapi
+
+2. ##### PyQt4  :
+
+       http://pyqt.sourceforge.net/Docs/PyQt4/
 
 Installation  
 ============
 
-#### For Windows:
+### For Windows:
 
-`Download Python 3`
+##### Download Python 3
 
-https://www.python.org/downloads/release/python-365/
+    https://www.python.org/downloads/release/python-365/
 
-`Download PyQt4`
+##### Download PyQt4`
 
-https://download.lfd.uci.edu/pythonlibs/u2yrk7ps/PyQt4-4.11.4-cp36-cp36m-win_amd64.whl
+    https://download.lfd.uci.edu/pythonlibs/u2yrk7ps/PyQt4-4.11.4-cp36-cp36m-win_amd64.whl
 
 In the command line navigate to download directory:
 
-`$ pip3 install --user hidapi`
+    $ git clone https://github.com/Psynosaur/moRFeus_Qt
+    $ cd moRFeus_Qt
+    $ pip3 install --user hidapi
+    $ pip3 install --user PyQt4-4.11.4-cp36-cp36m-win_amd64.whl
+    $ python -m pip install .
 
-`$ pip3 install --user PyQt4-4.11.4-cp36-cp36m-win_amd64.whl`
+### For Linux:
+#### Prerequisites
 
+  `$ sudo apt install python3-pip python3-dev libudev-dev libusb-1.0-0-dev python3-PyQt4`
 
-#### For Linux:
-
-#### There seems to be a error running this app on X-Server :
-
-`$ sudo -H apt install python3-pip`
-
-`$ sudo -H apt install libudev-dev`
 
 ##### Build hidapi from source when at step 3 opt for hidraw API instead of libusb:
+1. Download cython-hidapi archive:
 
-`$ python setup.py build --without-libusb`
+       $ git clone https://github.com/trezor/cython-hidapi.git
+       $ cd cython-hidapi
+       $ git submodule update --init
+       $ python3 setup.py build --without-libusb
+       $ sudo python3 setup.py install
 
-`$ sudo -H apt install python-qt4`
+##### moRFeus_Qt Installation
 
-`$ sudo -H pip3 install --user hidapi`
+       $ git clone https://github.com/Psynosaur/moRFeus_Qt
+       $ cd moRFeus_Qt
+       $ python3 -m pip install .
 
-##### To remove the root requirement when accessing the raw hidapi
+##### (Optional) To remove the root requirement when accessing the raw hidapi
 
-Inside one of the rules files in /etc/udev/rules.d/
+##### Inside one of the rules files in /etc/udev/rules.d/
 
-Add this line :
+###### Add this line :
 
-`SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", MODE="0664", GROUP="plugdev"`
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", MODE="0664", GROUP="plugdev"
 
-Then add yourself to the plugdev group.
 
-`$ sudo adduser username plugdev`
+###### Then add yourself to the plugdev group.
 
-Reload udev to reflect changes
+    $ sudo adduser $USERNAME plugdev
 
-`$ sudo udevadm control --reload`
+###### Reload udev to reflect changes
 
-`$ sudo udevadm trigger`
-
-`$ chmod +x moRFeus.py`
+    $ sudo udevadm control --reload
+    $ sudo udevadm trigger
 
 Usage
 =====
-Application does not run when the device hasn't been connected.
+#### When device isn't connected
+
+Device not found:
+
+![alt text][DNF]
+
+[DNF]: ./moRFeusQt/imgs/dnf.png "moRFeus_Qt"
+
 #### Windows
-`$ start pythonw moRFeus.pyw`
+    $ moRFeusQt
 
 Windows - moRFeus_Qt:
 
 ![alt text][moRFeus]
 
-[moRFeus]: ./MoRFeus_Qt.PNG "moRFeus_Qt"
+[moRFeus]: ./moRFeusQt/imgs/windows.png "moRFeus_Qt"
 
 #### Linux
-`$ ./moRFeus.py`
+    $ moRFeusQt
 
 Ubuntu - moRFeus_Qt:
 
 ![alt text][moRFeusLinux]
 
-[moRFeusLinux]: ./linux.png "moRFeus_Qt_linux"
+[moRFeusLinux]: ./moRFeusQt/imgs/linux.png "moRFeus_Qt_linux"
