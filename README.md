@@ -26,14 +26,17 @@ Installation
 
 ##### Download PyQt4`
 
-    https://download.lfd.uci.edu/pythonlibs/u2yrk7ps/PyQt4-4.11.4-cp36-cp36m-win_amd64.whl
+    https://www.lfd.uci.edu/~gohlke/pythonlibs/
+    Search: `PyQt4'
+    Download : PyQt4‑4.11.4‑cp36‑cp36m‑win_amd64.whl
+    
+   `$ pip3 install --user PyQt4-4.11.4-cp36-cp36m-win_amd64.whl`
 
-In the command line navigate to download directory:
+In the command line navigate to your download directory:
 
     $ git clone https://github.com/Psynosaur/moRFeus_Qt
     $ cd moRFeus_Qt
     $ pip3 install --user hidapi
-    $ pip3 install --user PyQt4-4.11.4-cp36-cp36m-win_amd64.whl
     $ python -m pip install .
 
 ### For Linux:
