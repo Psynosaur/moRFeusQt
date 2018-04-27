@@ -30,7 +30,7 @@ In the command line navigate to your download directory:
 ### For Linux:
 #### Prerequisites
 
-  `$ sudo apt install python3-pip python3-dev`
+  `$ sudo apt install python3-pip python3-dev libudev-dev libusb-1.0-0-dev`
 
 ##### moRFeus_Qt Installation
 
