@@ -1,41 +1,46 @@
 #!/usr/bin/env python
 # moRFeus python script for interfacing directly via the HID protocol
 
-import os
+
 import sys
 import time
-from moRFeusQt import moRFeus_class
-from moRFeusQt import moRFeusUI
+from moRFeusQt import mRFsClass
+from moRFeusQt import mRFsUI
+from PyQt5.QtGui import QCloseEvent
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMainWindow
+# # from threading import Thread
 
-# from threading import Thread
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import QMainWindow
-
-class moRFeusQt(QMainWindow):
+class moRFeusQt(QMainWindow,mRFsUI.Ui_mRFsMain):
     def __init__(self):
-        # super().__init__()
-        self.ui = moRFeusUI.Ui_moRFeus_Qt()
         super(moRFeusQt, self).__init__()
-        self.device = moRFeus_class.initMoRFeus()
-        self.moRFeusObject = moRFeus_class.moRFeus(self.device)
-        self.moRFmorse = moRFeus_class.morseCode(self.device)
-        self.ui.setupUi(self)
-        # QtGui.QMainWindow.__init__(self)
-        # Ui_MainWindow.__init__(self)
+        self.setupUi(self)
+        self.device = mRFsClass.initMoRFeus()
+        self.moRFeusObject = mRFsClass.moRFeus(self.device)
+        self.moRFmorse = mRFsClass.morseCode(self.device)
         # button actions when clicked
-        self.ui.genButton.clicked.connect(self.genQt)
-        self.ui.mixButton.clicked.connect(self.mixQt)
-        self.ui.noiseButton.clicked.connect(self.noiseQt)
-        self.ui.sweepButton.clicked.connect(self.sweepQt)
-        self.ui.biasOn.clicked.connect(self.biasOnQt)
-        self.ui.biasOff.clicked.connect(self.biasOffQt)
-        self.ui.startFreq.valueChanged.connect(self.setEnd)
-        self.ui.morseButton.clicked.connect(self.sendMorse)
+        self.startFreq.editingFinished.connect(self.statfreqQt)
+        self.startFreq.valueChanged.connect(self.setEnd)
+        self.stepSize.valueChanged.connect(self.setStep)
+        self.powerInput.editingFinished.connect(self.curQt)
+        self.steps.editingFinished.connect(self.setHops)
+        self.mixButton.clicked.connect(self.mixQt)
+        self.genButton.clicked.connect(self.genQt)
+        self.noiseButton.clicked.connect(self.noiseQt)
+        self.sweepButton.clicked.connect(self.sweepQt)
+        self.biasOn.clicked.connect(self.biasOnQt)
+        self.biasOff.clicked.connect(self.biasOffQt)
+        self.morseButton.clicked.connect(self.sendMorse)
         # self.morseInput.returnPressed.connect(self.sendMorse)
-        self.ui.readRegButton.clicked.connect(self.getReg)
-        self.ui.steps.valueChanged.connect(self.setEnd)
+        self.readRegButton.clicked.connect(self.getReg)
+
+    def closeEvent(self, event: QCloseEvent):
+        print("\n--------------------\nmoRFeus Device Bye\n--------------------")
+        self.device.close()
+        super().closeEvent(event)
 
     # The Get functions
+
     def getStats(self):
         self.getFunc()
         self.getCur()
@@ -48,7 +53,7 @@ class moRFeusQt(QMainWindow):
         # Object(moRFeus) sends message to device : a '0'(get) frequency
         self.moRFeusObject.message(0, self.moRFeusObject.funcFrequency, 0)
         # read and then set response from device
-        self.ui.startFreq.setValue(self.moRFeusObject.readDevice())
+        self.startFreq.setValue(self.moRFeusObject.readDevice())
 
     # Get current from device and set Qt spinbox accordingly
     def getCur(self):
@@ -56,7 +61,7 @@ class moRFeusQt(QMainWindow):
         # Object(moRFeus) sends message to device : a '0'(get) current
         self.moRFeusObject.message(0, self.moRFeusObject.funcCurrent, 0)
         # read and then set response from device
-        self.ui.powerInput.setValue(self.moRFeusObject.readDevice())
+        self.powerInput.setValue(self.moRFeusObject.readDevice())
 
     # Get function from device : 1 for Generator 0 for Mixer mode
     def getFunc(self):
@@ -79,7 +84,7 @@ class moRFeusQt(QMainWindow):
                 print('read_data: ', read_array)
                 reg = int.from_bytes(self.moRFeusObject.buffer_array,byteorder='big', signed=False)
                 hexy = hex(reg)[0:]
-                self.ui.readReg.setText(hexy)
+                self.readReg.setText(hexy)
                 break
 
     # Get LCD value from device
@@ -89,11 +94,6 @@ class moRFeusQt(QMainWindow):
         self.moRFeusObject.message(0, self.moRFeusObject.funcLCD, 0)
         # read and then set response from device
         self.moRFeusObject.readDevice()
-
-
-    # set endFreq by startfreq value + stepInput
-    def setEnd(self):
-        self.ui.endFreq.setValue(self.ui.startFreq.value () + (self.ui.stepSize.value() / 1000 * self.ui.steps.value()))
 
     # loop for moving upward in frequency (increases with step)
     def freqRange(self, start, end, step):
@@ -106,6 +106,19 @@ class moRFeusQt(QMainWindow):
         while end >= start:
             yield end
             end -= step
+
+    # The Set functions
+
+    def setHops(self):
+        self.endFreq.setValue(self.startFreq.value () + ((self.stepSize.value()/1000) * self.steps.value()))
+        # self.stepSize.setValue(abs(self.endFreq.value() - self.startFreq.value()))
+
+    def setStep(self):
+        self.steps.setValue(abs(self.endFreq.value () - self.startFreq.value ()) / (self.stepSize.value()/1000))
+
+    # set endFreq by startfreq value + stepInput
+    def setEnd(self):
+        self.endFreq.setValue(self.startFreq.value () + (self.stepSize.value() / 1000 * self.steps.value()))
 
     # Setting of the device LCD
     # 0 : 'Always On', 1 : '10s', 2 : '60s'
@@ -124,28 +137,36 @@ class moRFeusQt(QMainWindow):
 
     # Setting of the device current
     def curQt(self):
-        cur = self.ui.powerInput.value()
-        self.moRFeusObject.message(1, self.moRFeusObject.funcCurrent, cur)
+        while self.device:
+            try:
+                cur = self.powerInput.value()
+                self.moRFeusObject.message(1, self.moRFeusObject.funcCurrent, cur)
+                break
+            except ValueError:
+                break
 
     # setFrequency for Qt applet,
     # mixer/generator mode which only uses a static frequency
     def statfreqQt(self):
-        sFreq = self.ui.startFreq.value()
-        self.moRFeusObject.message(1, self.moRFeusObject.funcFrequency, sFreq)
+        while self.device:
+            try:
+                sFreq = self.startFreq.value()
+                self.moRFeusObject.message(1, self.moRFeusObject.funcFrequency, sFreq)
+                break
+            except ValueError:
+                break
 
     # Set moRFeus to generator mode
     # Generator static frequency
     def genQt(self):
         self.curQt()
         self.moRFeusObject.message(1, self.moRFeusObject.funcMixGen, 1)
-        self.statfreqQt()
 
     # Set moRFeus to mixer mode
     # Mixer static frequency
     def mixQt(self):
         self.curQt()
         self.moRFeusObject.message(1, self.moRFeusObject.funcMixGen, 0)
-        self.statfreqQt()
 
     # Set to max mixer frequency to create wideband noise
     def noiseQt(self):
@@ -156,13 +177,13 @@ class moRFeusQt(QMainWindow):
     # Frequency sweep routine, still needs a means to break out of
     # loop on some event..
     def sweepQt(self):
-        startFreq = self.ui.startFreq.value()
+        startFreq = self.startFreq.value()
         startFreq = int(startFreq * self.moRFeusObject.mil)
-        endFreq = self.ui.endFreq.value()
+        endFreq = self.endFreq.value()
         endFreq = int(endFreq * self.moRFeusObject.mil)
-        step  = self.ui.stepSize.value()
+        step  = self.stepSize.value()
         step = int(step * 1000)
-        delay = self.ui.delay.value()
+        delay = self.delay.value()
         # hops = abs(end - start)/step
         self.moRFeusObject.message(1, self.moRFeusObject.funcMixGen, 1)
         self.curQt()
@@ -186,7 +207,7 @@ class moRFeusQt(QMainWindow):
     # Sending of morse code via current switch, 0 is off 1 is on
     def sendMorse(self):
         while True:
-            morseInput = self.ui.morseInput.text()
+            morseInput = self.morseInput.text()
             for letter in morseInput:
                 for symbol in self.moRFmorse.MORSE[letter.upper()]:
                     if symbol == '-':
@@ -199,9 +220,3 @@ class moRFeusQt(QMainWindow):
                 time.sleep(0.5)
             break
         self.curQt()
-
-    # The close event
-    def closeEvent(self, event):
-        self.device.close()
-        print("\n--------------------\nmoRFeus Device Bye\n--------------------")
-        super(QtGui.QMainWindow, self).closeEvent(event)

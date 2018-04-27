@@ -7,11 +7,11 @@ import os
 import sys
 import time
 
-# sys.path.append('./../')
-# from moRFeus_morse import morseCode
-from moRFeusQt import moRFeus_class
+sys.path.append('./../')
+from moRFeus_morse import morseCode
+from moRFeus_class import moRFeus
 
-moRF = moRFeus_class.moRFeus()
+moRF = moRFeus()
 class moRFeusCmd(object):
 
     def int_to_bytes(self,value, length):                                       # Convert integer(input) value to an length(8) byte sized array

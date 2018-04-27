@@ -1,20 +1,17 @@
 
 import sys
 
-from PyQt4 import QtCore, QtGui
-from moRFeusQt import moRFeus_Qt
+from PyQt5.QtWidgets import QApplication
+from moRFeusQt import mRFsQt as mRFsapp
 
-def main(args=None):
-    if args is None:
-        args = sys.argv[1:]
-    mFQt = QtGui.QApplication(sys.argv)
-    window = moRFeus_Qt.moRFeusQt()
+def main():
+    app = QApplication(sys.argv)
+    morfGUI = mRFsapp.moRFeusQt()
     print('--------------------\nmoRFeus Device Stats\n--------------------')
-    window.getStats()
+    morfGUI.getStats()
     print('--------------------\nDevice Output\n--------------------')
-    window.getReg()
-    window.show()
-    sys.exit(mFQt.exec_())
+    morfGUI.show()
+    sys.exit(app.exec_())
 
 if __name__ == "__main__":
     main()
