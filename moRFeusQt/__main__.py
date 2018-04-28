@@ -2,11 +2,11 @@
 import sys
 
 from PyQt5.QtWidgets import QApplication
-from moRFeusQt import mRFsQt as mRFsapp
+from moRFeusQt import mRFsQt as mRFsApp
 
 def main():
     app = QApplication(sys.argv)
-    morfGUI = mRFsapp.moRFeusQt()
+    morfGUI = mRFsApp.moRFeusQt()
     print('--------------------\nmoRFeus Device Stats\n--------------------')
     morfGUI.getStats()
     print('--------------------\nDevice Output\n--------------------')

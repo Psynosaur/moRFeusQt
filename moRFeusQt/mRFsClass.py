@@ -1,7 +1,3 @@
-# There is now a need to get information from the device,
-# We use the getFrequency msg to get the current frequency
-# from the device, so that we can with that value set out
-# initial Qt applet start frequency accordingly
 import time
 import hid
 
@@ -53,16 +49,21 @@ class moRFeus(object):
     def __init__(self, device):
         self.device = device
 
+    # informaton based of the protocol description by Abhishek on the outernet forum :
+    # http://forums.outernet.is/t/rf-product-morfeus-frequency-converter-and-signal-generator/5025/59
+
     # Constants
     LOmax        = 5400000000                                                       # Local Oscillator max (5400MHz)
     LOmin        = 85000000                                                         # Local Oscillator min (85Mhz)
     mil          = 1000000                                                          # Saves some zero's here and there
+
     msgArray     = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     getMsg       = [0,114]
     setMsg       = [0,119]
     # 8 byte value carrier
     read_buffer  = [0, 0, 0, 0, 0, 0, 0, 0]
     buffer_array = bytearray(read_buffer)
+    # 6 byte trailers
     sixZero      = [0, 0, 0, 0, 0, 0]
     # Function Constants
     funcFrequency    = 129
@@ -70,28 +71,8 @@ class moRFeus(object):
     funcCurrent      = 131 # 0 - 7
     funcBiasTee      = 132 # 1 On : 0 Off
     funcLCD          = 133 # 0 : Always on, 1 : 10s, 2 : 60s
-    funcfirmwareMode = 134
+    funcFW           = 134
     funcRegister     = 0
-    # Byte Arrays known to the moRFeus device
-    # Setting functions [0, 119, . . .]
-
-    # setGen       = [0, 119, 130, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]          # Generator mode
-    # setMix       = [0, 119, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]          # Mixer mode
-    # biasOn       = [0, 119, 132, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0]          # BiasTee on
-    # biasOff      = [0, 119, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]          # BiasTee off
-    # firmwareMode = [0, 119, 134, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-    # setLCD       = [0, 119, 133, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]          # with our custom 8byte current array
-    # whiteNoise   = [0, 119, 129, 0, 0, 0, 1, 65, 221, 118, 0, 96, 0, 0, 2, 31, 0]     # setFrequency to 5400 000 000 Hz
-    # setFrequency = [0, 119, 129, 0, 0, 0, 1, 65, 221, 118, 0, 96, 0, 0, 2, 31, 0]   # setFrequency bytearray template
-
-    # getCurrent   = [0, 114, 131, 0, 0, 0, 0, 0, 0, 0, 1, 0, 96, 0, 0, 2, 0]
-    # getFunction  = [0, 114, 130, 0, 0, 0, 0, 0, 0, 0, 1, 0, 96, 0, 0, 2, 0]
-    # getBiasTee   = [0, 114, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 96, 0, 0, 2, 0]
-    # # register
-    # msgRegister  = [0, 114, 0, 0, 0, 0, 0, 0, 0, 190, 251, 0, 0, 96, 0, 0, 0]
-    #
-    # getLCD       = [0, 114, 133, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
 
     # Convert integer(input) value to an length(8) byte sized array
     # to be used for inserting our custom array starting at
@@ -115,12 +96,9 @@ class moRFeus(object):
                 else:
                     self.msgArray[x] = self.getMsg[x]
                     output.append(self.msgArray[x])
-            # print(output)
             # we have an variable array with our mode set...
-            # now we should set the function... it always at the same position
+            # now we should set the function... its always at the same position
             output.append(func)
-            # print(output)
-
             # set the value_array
             if func == 129 and mode == 1:
                 freq = int(value * self.mil)
@@ -128,10 +106,8 @@ class moRFeus(object):
                 for x in range(3,11):
                     self.msgArray[x] = input_array[x-3]
                     output.append(self.msgArray[x])
-                # print(output)
                 for x in range(0,6):
                     output.append(self.sixZero[x])
-                # print(output)
                 self.device.write(output)
                 break
             else:
@@ -139,10 +115,8 @@ class moRFeus(object):
                 for x in range(3,11):
                     self.msgArray[x] = input_array[x-3]
                     output.append(self.msgArray[x])
-                # print(output)
                 for x in range(0,6):
                     output.append(self.sixZero[x])
-                # print(output)
                 self.device.write(output)
                 break
 
@@ -154,23 +128,27 @@ class moRFeus(object):
                 self.msgArray[x] = read_array[x-1]
                 # reads byte array and places it in 8 byte array to
                 self.buffer_array[x-3] = self.msgArray[x]
-            # convert to an int to init the Qt widget's ---
             init_values = int.from_bytes(self.buffer_array,byteorder='big', signed=False)
             if read_array[1] == self.funcFrequency:
-                print('Freq:', init_values/self.mil)
+                print('Freq :', str.format('{0:.6f}', init_values/self.mil))
                 return (init_values/self.mil)
             if read_array[1] == self.funcCurrent:
-                print('Current:', init_values)
+                print('Curr :', init_values)
                 return init_values
             if read_array[1] == self.funcMixGen:
                 if init_values == 0:
-                    print("Function: Mixer")
+                    print("Func : Mixer")
                 else:
-                    print("Function: Generator")
+                    print("Func : Generator")
             if read_array[1] == self.funcLCD:
                 if init_values == 0:
-                    print("LCD : Always On")
+                    print("LCD  : Always On")
                 if init_values == 1:
-                    print("LCD : 10s")
+                    print("LCD  : 10s")
                 else:
-                    print("LCD : 60s")
+                    print("LCD  : 60s")
+            if read_array[1] == self.funcBiasTee:
+                if init_values == 0:
+                    print("Bias : Off")
+                if init_values == 1:
+                    print("Bias : On")
