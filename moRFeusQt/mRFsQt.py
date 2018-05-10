@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # moRFeus python script for interfacing directly via the HID protocol
 
-
-import sys
 import time
 from moRFeusQt import mRFsClass
 from moRFeusQt import mRFsUI
@@ -14,9 +12,9 @@ class moRFeusQt(QMainWindow,mRFsUI.Ui_mRFsMain):
     def __init__(self):
         super(moRFeusQt, self).__init__()
         self.setupUi(self)
-        self.device = mRFsClass.initMoRFeus()
+        self.device = mRFsClass.initmorf()
         self.moRFeus = mRFsClass.moRFeus(self.device)
-        self.morse = mRFsClass.morseCode(self.device)
+        self.morse = mRFsClass.MorseCode(self.device)
         # button actions when triggered
         self.startFreq.editingFinished.connect(self.statfreqQt)
         self.startFreq.valueChanged.connect(self.setEnd)
@@ -104,13 +102,15 @@ class moRFeusQt(QMainWindow,mRFsUI.Ui_mRFsMain):
         self.moRFeus.readDevice()
 
     # loop for moving upward in frequency (increases with step)
-    def freqRange(self, start, end, step):
+    @classmethod
+    def freqRange(cls, start, end, step):
         while start <= end:
             yield start
             start += step
 
-    # loop for moving downward in frequency (descreases with step)
-    def freqRangeReverse(self, start, end, step):
+    # loop for moving downward in frequency (decreases with step)
+    @classmethod
+    def freqRangeReverse(cls, start, end, step):
         while end >= start:
             yield end
             end -= step

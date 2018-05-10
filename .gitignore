@@ -8,3 +8,4 @@ __pycache__
 ex.py
 ss.py
 *.spec
+/.idea/
