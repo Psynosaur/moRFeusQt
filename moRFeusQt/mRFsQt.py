@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # moRFeus python script for interfacing directly via the HID protocol
-
 import time
 from moRFeusQt import mRFsClass
 from moRFeusQt import mRFsUI
@@ -8,12 +7,13 @@ from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtWidgets import QMainWindow
 # # from threading import Thread
 
-class moRFeusQt(QMainWindow,mRFsUI.Ui_mRFsMain):
+
+class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
     def __init__(self):
-        super(moRFeusQt, self).__init__()
+        super(MoRFeusQt, self).__init__()
         self.setupUi(self)
         self.device = mRFsClass.initmorf()
-        self.moRFeus = mRFsClass.moRFeus(self.device)
+        self.moRFeus = mRFsClass.MoRFeus(self.device)
         self.morse = mRFsClass.MorseCode(self.device)
         # button actions when triggered
         self.startFreq.editingFinished.connect(self.statfreqQt)
@@ -37,7 +37,6 @@ class moRFeusQt(QMainWindow,mRFsUI.Ui_mRFsMain):
         super().closeEvent(event)
 
     # The Get functions
-
     def getStats(self):
         self.getFunc()
         self.getFreq()
@@ -158,8 +157,8 @@ class moRFeusQt(QMainWindow,mRFsUI.Ui_mRFsMain):
     def statfreqQt(self):
         while self.device:
             try:
-                sFreq = self.startFreq.value()
-                self.moRFeus.message(1, self.moRFeus.funcFrequency, sFreq)
+                s_freq = self.startFreq.value()
+                self.moRFeus.message(1, self.moRFeus.funcFrequency, s_freq)
                 break
             except ValueError:
                 break
@@ -187,11 +186,11 @@ class moRFeusQt(QMainWindow,mRFsUI.Ui_mRFsMain):
     # Frequency sweep routine, still needs a means to break out of
     # loop on some event..
     def sweepQt(self):
-        startFreq = self.startFreq.value()
-        startFreq = int(startFreq * self.moRFeus.mil)
-        endFreq = self.endFreq.value()
-        endFreq = int(endFreq * self.moRFeus.mil)
-        step  = self.stepSize.value()
+        start_freq = self.startFreq.value()
+        start_freq = int(start_freq * self.moRFeus.mil)
+        end_freq = self.endFreq.value()
+        end_freq = int(end_freq * self.moRFeus.mil)
+        step = self.stepSize.value()
         step = int(step * 1000)
         delay = self.delay.value()
         # hops = abs(end - start)/step
@@ -201,13 +200,13 @@ class moRFeusQt(QMainWindow,mRFsUI.Ui_mRFsMain):
         condition = True
         y = 1
         while condition:
-            for x in self.freqRange(startFreq, endFreq, step):
+            for x in self.freqRange(start_freq, end_freq, step):
                 self.moRFeus.message(1, self.moRFeus.funcFrequency, (x/self.moRFeus.mil))
                 print('FWD step', y, ':', x/self.moRFeus.mil, "MHz")
                 time.sleep(delay/1000)
                 y = y + 1
             y = 1
-            for x in self.freqRangeReverse(startFreq, endFreq, step):
+            for x in self.freqRangeReverse(start_freq, end_freq, step):
                 self.moRFeus.message(1, self.moRFeus.funcFrequency, (x/self.moRFeus.mil))
                 time.sleep(delay/1000)
                 print('BWD step', y, ':', x/self.moRFeus.mil, "MHz")
@@ -217,8 +216,8 @@ class moRFeusQt(QMainWindow,mRFsUI.Ui_mRFsMain):
     # Sending of morse code via current switch, 0 is off 1 is on
     def sendMorse(self):
         while True:
-            morseInput = self.morseInput.text()
-            for letter in morseInput:
+            morse_input = self.morseInput.text()
+            for letter in morse_input:
                 for symbol in self.morse.MORSE[letter.upper()]:
                     if symbol == '-':
                         self.morse.dash()

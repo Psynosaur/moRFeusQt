@@ -3,8 +3,6 @@ import hid
 
 
 # init routine for moRFeus
-
-
 def initmorf():
     while True:
         try:
@@ -34,8 +32,8 @@ class MorseCode(object):
              '=': '-...-', '@': '.--.-.'}
 
     def switch(self, state):
-        moRFeusObject = moRFeus(self.device)
-        moRFeusObject.message(1, moRFeusObject.funcCurrent, state)
+        morfobj = MoRFeus(self.device)
+        morfobj.message(1, morfobj.funcCurrent, state)
 
     def dot(self):
         self.switch(1)
@@ -50,11 +48,11 @@ class MorseCode(object):
         time.sleep(0.2)
 
 
-class moRFeus(object):
+class MoRFeus(object):
     def __init__(self, device):
         self.device = device
 
-    # informaton based of the protocol description by Abhishek on the outernet forum :
+    # Information based of the protocol description by Abhishek on the outernet forum :
     # http://forums.outernet.is/t/rf-product-morfeus-frequency-converter-and-signal-generator/5025/59
 
     # Constants
@@ -91,39 +89,36 @@ class moRFeus(object):
         # return the result
         return result
 
+    def writemsgbytes(self, value, array):
+        input_array = self.int_to_bytes(value, 8)
+        for x in range(3, 11):
+            self.msgArray[x] = input_array[x - 3]
+            array.append(self.msgArray[x])
+        for x in range(0, 6):
+            array.append(self.sixZero[x])
+        self.device.write(array)
+        
     def message(self, mode, func, value):
-        output = []
+        outputarray = []
         # this sets the mode, 0: get and 1: set
         while True:
             for x in range(0, 2):
                 if mode == 1:
                     self.msgArray[x] = self.setMsg[x]
-                    output.append(self.msgArray[x])
+                    outputarray.append(self.msgArray[x])
                 else:
                     self.msgArray[x] = self.getMsg[x]
-                    output.append(self.msgArray[x])
+                    outputarray.append(self.msgArray[x])
             # we have an variable array with our mode set...
             # now we should set the function... its always at the same position
-            output.append(func)
+            outputarray.append(func)
             # set the value_array
             if func == 129 and mode == 1:
                 freq = int(value * self.mil)
-                input_array = self.int_to_bytes(freq, 8)
-                for x in range(3, 11):
-                    self.msgArray[x] = input_array[x - 3]
-                    output.append(self.msgArray[x])
-                for x in range(0, 6):
-                    output.append(self.sixZero[x])
-                self.device.write(output)
+                self.writemsgbytes(freq, outputarray)
                 break
             else:
-                input_array = self.int_to_bytes(value, 8)
-                for x in range(3, 11):
-                    self.msgArray[x] = input_array[x - 3]
-                    output.append(self.msgArray[x])
-                for x in range(0, 6):
-                    output.append(self.sixZero[x])
-                self.device.write(output)
+                self.writemsgbytes(value, outputarray)
                 break
 
     # read function byte and return values accordingly
@@ -137,7 +132,7 @@ class moRFeus(object):
             init_values = int.from_bytes(self.buffer_array, byteorder='big', signed=False)
             if read_array[1] == self.funcFrequency:
                 print('Freq :', str.format('{0:.6f}', init_values / self.mil))
-                return (init_values / self.mil)
+                return ( init_values / self.mil )
             if read_array[1] == self.funcCurrent:
                 print('Curr :', init_values)
                 return init_values
