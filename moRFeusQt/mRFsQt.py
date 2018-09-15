@@ -163,6 +163,9 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
     # Set moRFeus to generator mode
     # Generator static frequency
     def genQt(self):
+        if self.startFreq.value() == 5400:
+            self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, self.moRFeus.initFreq)
+            self.startFreq.setValue(self.moRFeus.initFreq)
         self.curQt()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 1)
         print("Generator mode")
@@ -170,12 +173,16 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
     # Set moRFeus to mixer mode
     # Mixer static frequency
     def mixQt(self):
+        if self.startFreq.value() == 5400:
+            self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, self.moRFeus.initFreq)
+            self.startFreq.setValue(self.moRFeus.initFreq)
         self.curQt()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 0)
         print("Mixer mode")
 
     # Set to max mixer frequency to create wideband noise
     def noiseQt(self):
+        self.moRFeus.initFreq = self.startFreq.value()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 1)
         self.curQt()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, 5400)

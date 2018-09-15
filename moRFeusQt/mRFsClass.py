@@ -80,6 +80,9 @@ class MoRFeus(object):
     funcFW = 134
     funcRegister = 0
 
+    # Housekeeping for remembering GUI vars when pressing the noise button
+    initFreq = 0
+
     # Convert integer(input) value to an length(8) byte sized array
     # to be used for inserting our custom array starting at
     # setFreq[3] to setFreq[10]
