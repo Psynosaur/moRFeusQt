@@ -215,10 +215,10 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
             for letter in morse_input:
                 for symbol in self.morseCode.MORSE[letter.upper()]:
                     if symbol == '-':
-                        self.morse.dash()
+                        self.morseCode.dash()
                     else:
                         if symbol == '.':
-                            self.morse.dot()
+                            self.morseCode.dot()
                         else:
                             time.sleep(0.5)
                 time.sleep(0.5)
