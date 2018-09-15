@@ -90,8 +90,8 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
                     self.moRFeus.msgArray[x] = read_array[x]
                 for y in range(3, 11):
                     self.moRFeus.buffer_array[y-3] = self.moRFeus.msgArray[y]
-                print('read_data : ', read_array)
-                reg = int.from_bytes(self.moRFeus.buffer_array,byteorder='big', signed=False)
+                print('Read Data   : ', read_array)
+                reg = int.from_bytes(self.moRFeus.buffer_array, byteorder='big', signed=False)
                 hexy = hex(reg)[0:]
                 self.readReg.setText(hexy)
                 break
@@ -142,12 +142,12 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
     # Setting of the device biasTee On
     def biasOnQt(self):
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcBiasTee, 1)
-        print("Bias : On")
+        print("Bias        :  On")
 
     # Setting of the device biasTee Off
     def biasOffQt(self):
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcBiasTee, 0)
-        print("Bias : Off")
+        print("Bias        :  Off")
 
     # Setting of the device current
     def curQt(self):
@@ -155,7 +155,7 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
             try:
                 cur = self.powerInput.value()
                 self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcCurrent, cur)
-                print("Current set : ", cur)
+                print("Current     : ", cur)
                 break
             except ValueError:
                 break
@@ -167,7 +167,7 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
             try:
                 s_freq = self.startFreq.value()
                 self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, s_freq)
-                print("Frequency set : {0:8.6f}".format(s_freq), "MHz")
+                print("Frequency   :  {0:8.6f}".format(s_freq), "MHz")
                 break
             except ValueError:
                 break
@@ -176,17 +176,15 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
     # Generator static frequency
     def genQt(self):
         self.check5400()
-        self.curQt()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 1)
-        print("Generator mode")
+        print("Generator   :")
 
     # Set moRFeus to mixer mode
     # Mixer static frequency
     def mixQt(self):
         self.check5400()
-        self.curQt()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 0)
-        print("Mixer mode")
+        print("Mixer       :")
 
     # Set to max mixer frequency to create wideband noise
     def noiseQt(self):
@@ -194,7 +192,7 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
         self.curQt()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, 5400)
         self.startFreq.setValue(5400)
-        print('Such Noise . . .')
+        print('Such Noise  :')
 
     # Frequency sweep routine, still needs a means to break out of
     # loop on some event..
@@ -209,19 +207,16 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
         delay = self.delay.value()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 1)
         self.curQt()
-        # get steps
-        condition = True
         y = 1
-        self.moRFeus.printProgressBar(0, stepcount, prefix='Sweep :', suffix='', length=50)
-        while condition:
+        self.moRFeus.printProgressBar(0, stepcount, prefix='Sweep :', suffix='', length=43)
+        while True:
             if stepcount == 0:
-                print("There is no range to sweep")
-                condition = False
+                print("NULL Range  :")
                 break
             else:
                 for x in self.freqRange(start_freq + step, end_freq, step):
                     self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, (x/self.moRFeus.mil))
-                    self.moRFeus.printProgressBar(y, stepcount, prefix='Sweep :', suffix='', length=50)
+                    self.moRFeus.printProgressBar(y, stepcount, prefix='Sweep Prog  : ', suffix='', length=43)
                     time.sleep(delay/1000)
                     y += 1
                 self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, self.startFreq.value())
@@ -241,6 +236,6 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
                         else:
                             time.sleep(0.5)
                 time.sleep(0.5)
-            print("Mors : " + morse_input)
+            print("Mors        : " + morse_input)
             break
         self.curQt()
