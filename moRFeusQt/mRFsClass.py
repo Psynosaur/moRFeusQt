@@ -81,7 +81,7 @@ class MoRFeus(object):
     funcRegister = 0
 
     # Housekeeping for remembering GUI vars when pressing the noise button
-    initFreq = 0
+    initFreq = 433.92
 
     # Convert integer(input) value to an length(8) byte sized array
     # to be used for inserting our custom array starting at
@@ -138,6 +138,7 @@ class MoRFeus(object):
             init_values = int.from_bytes(self.buffer_array, byteorder='big', signed=False)
             if read_array[1] == self.funcFrequency:
                 print('Freq :', str.format('{0:.6f}', init_values / self.mil))
+                self.initFreq = init_values / self.mil
                 return init_values / self.mil
             if read_array[1] == self.funcCurrent:
                 print('Curr :', init_values)
@@ -172,12 +173,13 @@ class MoRFeus(object):
             length      - Optional  : character length of bar (Int)
             fill        - Optional  : bar fill character (Str)
         """
-        percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-        filledLength = int(length * iteration // total)
-        bar = fill * filledLength + '-' * (length - filledLength)
-        print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end='\r')
-        # Print New Line on Complete
-        if iteration == total:
-            print()
+        if iteration >= 1:
+            percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+            filledLength = int(length * iteration // total)
+            bar = fill * filledLength + '-' * (length - filledLength)
+            print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end='\r')
+            # Print New Line on Complete
+            if iteration == total:
+                print()
 
 
