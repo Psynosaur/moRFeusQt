@@ -2,21 +2,6 @@ import hid
 from time import sleep
 
 
-# init routine for moRFeus
-def initmorf():
-    while True:
-        try:
-            device = hid.device()
-            # moRFeus VendorID/ProductID
-            device.open(0x10c4, 0xeac9)
-            device.set_nonblocking(0)
-            return device
-        except IOError:
-            print('No moRFeus found... Retrying in 3 seconds')
-            time.sleep(3)
-            continue
-
-
 # morse code source : https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/robot/resources/morse_code.py
 class MorseCode(object):
     def __init__(self, device):
