@@ -60,3 +60,7 @@ From : https://brew.sh/
     $ git clone https://github.com/Psynosaur/moRFeus_Qt && cd moRFeus_Qt
     $ python3 setup.py install
     $ moRFeusQt
+
+#### Unit Test(mRFs_Class only for now :P)
+    
+    $ python -m unittest tests\test_mRFsClass.py

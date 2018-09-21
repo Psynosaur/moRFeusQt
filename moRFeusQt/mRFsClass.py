@@ -53,6 +53,33 @@ class MoRFeus(object):
     def __init__(self, device):
         self.device = device
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    @staticmethod
+    def findmorfeus():
+        for d in hid.enumerate(MoRFeus.vendorID, MoRFeus.productID):
+            keys = list(d.keys())
+            for key in keys:
+                devicedict = d[key]
+                if devicedict == MoRFeus.productID:
+                    return True
+
+    # init routine for moRFeus
+    @staticmethod
+    def initdevice():
+        while True:
+            try:
+                device = hid.device()
+                # moRFeus VendorID/ProductID
+                device.open(MoRFeus.vendorID, MoRFeus.productID)
+                device.set_nonblocking(0)
+                return device
+            except IOError:
+                print('No moRFeus found... Retrying in 3 seconds')
+                sleep(3)
+                continue
+
     # Information based of the protocol description by Abhishek on the othernet forum :
     # https://forums.othernet.is/t/rf-product-morfeus-frequency-converter-and-signal-generator/5025/59
 
@@ -62,6 +89,8 @@ class MoRFeus(object):
     mil = 1000000  # Saves some zero's here and there
     SET = 1
     GET = 0
+    vendorID = 4292
+    productID = 60105
 
     msgArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     getMsg = [0, 114]

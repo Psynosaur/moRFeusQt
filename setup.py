@@ -17,7 +17,7 @@ except ImportError:
 setup(
     name='moRFeusQt',
     url='https://github.com/Psynosaur/moRFeus_Qt',
-    version='1.396',
+    version='1.693',
     author='Ohan Smit',
     author_email='psynosaur@gmail.com',
     packages=['moRFeusQt'],

@@ -12,7 +12,7 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
     def __init__(self):
         super(MoRFeusQt, self).__init__()
         self.setupUi(self)
-        self.device = mRFsClass.initmorf()
+        self.device = mRFsClass.MoRFeus.initdevice()
         self.moRFeus = mRFsClass.MoRFeus(self.device)
         self.morseCode = mRFsClass.MorseCode(self.device)
         # button actions when triggered
@@ -236,6 +236,6 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
                         else:
                             time.sleep(0.5)
                 time.sleep(0.5)
-            print("Mors        : " + morse_input)
+            print("Mors        :  " + morse_input)
             break
         self.curQt()
