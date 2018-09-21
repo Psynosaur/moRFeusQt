@@ -4,6 +4,7 @@ from moRFeusQt import mRFsClass as classm
 
 class TestMRFs(unittest.TestCase):
 
+    @classmethod
     def mockdevice(self):
         td = hid.device()
         td.open(classm.MoRFeus.vendorID, classm.MoRFeus.productID)

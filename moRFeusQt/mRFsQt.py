@@ -5,6 +5,8 @@ from moRFeusQt import mRFsClass
 from moRFeusQt import mRFsUI
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtWidgets import QMainWindow
+
+
 # # from threading import Thread
 
 
@@ -33,11 +35,11 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
 
     def closeEvent(self, event: QCloseEvent):
         print("\n--------------------\nSee you next time...\n--------------------")
-        """
-           I don't believe that leaving the device at 5400Mhz should be 
-           allowed in this application on close, unless you started
-           with that frequency. Disconnect OUT once done
-        """
+
+        # I don't believe that leaving the device at 5400Mhz should be
+        # allowed in this application on close, unless you started
+        # with that frequency. Disconnect OUT once done
+
         self.check5400()
         self.device.close()
         super().closeEvent(event)
@@ -54,7 +56,6 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
         self.getBias()
         self.getCur()
         self.getLCD()
-
 
     # Get frequency from device and set Qt spinbox accordingly
     def getFreq(self):
@@ -89,7 +90,7 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
                 for x in range(0, 16):
                     self.moRFeus.msgArray[x] = read_array[x]
                 for y in range(3, 11):
-                    self.moRFeus.buffer_array[y-3] = self.moRFeus.msgArray[y]
+                    self.moRFeus.buffer_array[y - 3] = self.moRFeus.msgArray[y]
                 print('Read Data   : ', read_array)
                 reg = int.from_bytes(self.moRFeus.buffer_array, byteorder='big', signed=False)
                 hexy = hex(reg)[0:]
@@ -119,18 +120,18 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
             yield start
             start += step
 
-   # The Set functions
+    # The Set functions
 
     def setHops(self):
-        self.endFreq.setValue(self.startFreq.value () + ((self.stepSize.value()/1000) * self.steps.value()))
+        self.endFreq.setValue(self.startFreq.value() + ((self.stepSize.value() / 1000) * self.steps.value()))
         # self.stepSize.setValue(abs(self.endFreq.value() - self.startFreq.value()))
 
     def setStep(self):
-        self.steps.setValue(abs(self.endFreq.value () - self.startFreq.value ()) / (self.stepSize.value()/1000))
+        self.steps.setValue(abs(self.endFreq.value() - self.startFreq.value()) / (self.stepSize.value() / 1000))
 
     # set endFreq by startfreq value + stepInput
     def setEnd(self):
-        self.endFreq.setValue(self.startFreq.value () + (self.stepSize.value() / 1000 * self.steps.value()))
+        self.endFreq.setValue(self.startFreq.value() + (self.stepSize.value() / 1000 * self.steps.value()))
 
     # Setting of the device LCD
     # 0 : 'Always On', 1 : '10s', 2 : '60s'
@@ -215,9 +216,9 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
                 break
             else:
                 for x in self.freqRange(start_freq + step, end_freq, step):
-                    self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, (x/self.moRFeus.mil))
+                    self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, (x / self.moRFeus.mil))
                     self.moRFeus.printProgressBar(y, stepcount, prefix='Sweep Prog  : ', suffix='', length=43)
-                    time.sleep(delay/1000)
+                    time.sleep(delay / 1000)
                     y += 1
                 self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, self.startFreq.value())
                 break

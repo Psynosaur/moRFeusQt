@@ -175,6 +175,7 @@ class MoRFeus(object):
                 if init_values == 1:
                     print("Bias : On")
 
+    @classmethod
     def printProgressBar(self, iteration, total, prefix='', suffix='', decimals=1, length=100, fill='|'):
         """
         Call in a loop to create terminal progress bar
