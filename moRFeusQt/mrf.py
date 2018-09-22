@@ -2,52 +2,16 @@ import hid
 from time import sleep
 
 
-# morse code source : https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/robot/resources/morse_code.py
-class MorseCode(object):
-    def __init__(self, device):
-        self.device = device
-
-    # added some additional morse code characters '@','!' and '&'
-    MORSE = {' ': ' ', "'": '.----.', '(': '-.--.-', ')': '-.--.-', ',': '--..--', '-': '-....-', '.': '.-.-.-',
-             '/': '-..-.', '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....',
-             '6': '-....', '7': '--...', '8': '---..', '9': '----.', ':': '---...', ';': '-.-.-.', '?': '..--..',
-             'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.',
-             'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.',
-             'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-',
-             'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..', '_': '..--.-', '+': '.-.-.',
-             '=': '-...-', '@': '.--.-.', '!': '-.-.--', '&': '.-...'}
-
-    def switch(self, state):
-        moRFeus = MoRFeus(self.device)
-        moRFeus.message(moRFeus.SET, moRFeus.funcCurrent, state)
-
-    def dot(self):
-        self.switch(1)
-        sleep(0.2)
-        self.switch(0)
-        sleep(0.2)
-
-    def dash(self):
-        self.switch(1)
-        sleep(0.5)
-        self.switch(0)
-        sleep(0.2)
-
-
 class MoRFeus(object):
     def __init__(self, device):
         self.device = device
 
-    def __eq__(self, other):
-        return self.__dict__ == other.__dict__
-
-    @staticmethod
-    def findmorfeus():
+    @classmethod
+    def findmorfeus(cls):
         for d in hid.enumerate(MoRFeus.vendorID, MoRFeus.productID):
             keys = list(d.keys())
             for key in keys:
-                devicedict = d[key]
-                if devicedict == MoRFeus.productID:
+                if d[key] == MoRFeus.productID:
                     return True
 
     # init routine for moRFeus
@@ -176,7 +140,7 @@ class MoRFeus(object):
                     print("Bias : On")
 
     @classmethod
-    def printProgressBar(self, iteration, total, prefix='', suffix='', decimals=1, length=100, fill='|'):
+    def printProgressBar(cls, iteration, total, prefix='', suffix='', decimals=1, length=100, fill='|'):
         """
         Call in a loop to create terminal progress bar
         @params:

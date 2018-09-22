@@ -1,7 +1,7 @@
 # Main Loop
 import sys
 from PyQt5.QtWidgets import QApplication
-from moRFeusQt import mRFsQt as mRFsApp
+from moRFeusQt import mrfqt as mRFsApp
 
 
 def main():

@@ -1,22 +1,20 @@
 #!/usr/bin/env python
 # moRFeus python script for interfacing directly via the HID protocol
 import time
-from moRFeusQt import mRFsClass
-from moRFeusQt import mRFsUI
+from moRFeusQt import mrf
+from moRFeusQt import mrfmorse
+from moRFeusQt import mrfui
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtWidgets import QMainWindow
 
 
-# # from threading import Thread
-
-
-class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
+class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
     def __init__(self):
         super(MoRFeusQt, self).__init__()
         self.setupUi(self)
-        self.device = mRFsClass.MoRFeus.initdevice()
-        self.moRFeus = mRFsClass.MoRFeus(self.device)
-        self.morseCode = mRFsClass.MorseCode(self.device)
+        self.device = mrf.MoRFeus.initdevice()
+        self.moRFeus = mrf.MoRFeus(self.device)
+        self.morseCode = mrfmorse.MorseCode(self.device)
         # button actions when triggered
         self.startFreq.editingFinished.connect(self.statfreqQt)
         self.startFreq.valueChanged.connect(self.setEnd)
@@ -36,9 +34,11 @@ class MoRFeusQt(QMainWindow, mRFsUI.Ui_mRFsMain):
     def closeEvent(self, event: QCloseEvent):
         print("\n--------------------\nSee you next time...\n--------------------")
 
-        # I don't believe that leaving the device at 5400Mhz should be
-        # allowed in this application on close, unless you started
-        # with that frequency. Disconnect OUT once done
+        """
+        I don't believe that leaving the device at 5400Mhz should be
+        allowed in this application on close, unless you started
+        with that frequency. Disconnect OUT once done
+        """
 
         self.check5400()
         self.device.close()

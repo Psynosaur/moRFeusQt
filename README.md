@@ -61,6 +61,6 @@ From : https://brew.sh/
     $ python3 setup.py install
     $ moRFeusQt
 
-#### Unit Test(mRFs_Class only for now :P)
+#### Unit Tests
     
-    $ python -m unittest tests\test_mRFsClass.py
+    $ python -m unittest discover ./tests
