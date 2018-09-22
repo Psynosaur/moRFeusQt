@@ -34,11 +34,9 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
     def closeEvent(self, event: QCloseEvent):
         print("\n--------------------\nSee you next time...\n--------------------")
 
-        """
-        I don't believe that leaving the device at 5400Mhz should be
-        allowed in this application on close, unless you started
-        with that frequency. Disconnect OUT once done
-        """
+        # I don't believe that leaving the device at 5400Mhz should be
+        # allowed in this application on close, unless you started
+        # with that frequency. Disconnect OUT once done
 
         self.check5400()
         self.device.close()

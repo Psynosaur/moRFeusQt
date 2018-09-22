@@ -11,17 +11,15 @@ class TestMRFs(unittest.TestCase):
         td.set_nonblocking(1)
         return td
 
-    def test_findmorfeus(self):
-        cond = mrf.MoRFeus.findmorfeus()
-        if cond:
-            self.assertTrue(mrf.MoRFeus.findmorfeus())
+    @classmethod
+    def tfindmorfeus(cls):
+        conddevice = mrf.MoRFeus.findmorfeus()
+        if conddevice:
             print("\ntest_findmorfeus : Passed")
-            pass
-        else:
-            self.assertIsNotNone(cond, "\n\ntest_findmorfeus : Failed - No Device")
+            return True
 
     def test_initdevice(self):
-        cond = mrf.MoRFeus.findmorfeus()
+        cond = self.tfindmorfeus()
         if cond:
             td1 = mrf.MoRFeus.initdevice()
             td2 = self.mockdevice()
@@ -30,6 +28,7 @@ class TestMRFs(unittest.TestCase):
             td2.close()
             print("\ntest_initdevice : Passed")
         else:
+            print(type(cond))
             self.assertIsNotNone(cond, "\n\ntest_initdevice : Failed - No Device")
 
 

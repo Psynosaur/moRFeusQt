@@ -6,6 +6,7 @@ from time import sleep
 class MorseCode(object):
     def __init__(self, device):
         self.device = device
+        self.moRFeus = mrf.MoRFeus(self.device)
 
     # added some additional morse code characters '@','!' and '&'
     MORSE = {' ': ' ', "'": '.----.', '(': '-.--.-', ')': '-.--.-', ',': '--..--', '-': '-....-', '.': '.-.-.-',
@@ -18,7 +19,7 @@ class MorseCode(object):
              '=': '-...-', '@': '.--.-.', '!': '-.-.--', '&': '.-...'}
 
     def switch(self, state):
-        self.device.message(mrf.MoRFeus.SET, mrf.MoRFeus.funcCurrent, state)
+        self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcCurrent, state)
 
     def dot(self):
         self.switch(1)
