@@ -30,22 +30,6 @@ class TestMRFs(unittest.TestCase):
         td1.close()
         td2.close()
 
-    def test_int_2_bytes(self):
-        # Setting up some var
-        value = 333
-        length = 8
-        # Setup byte array with the custom int_2_bytes
-        mbyter = mrf.MoRFeus.int_2_bytes(value, length)
-        # Setup byte array with standard Python
-        pbyter = value.to_bytes(length, 'big')
-        # Convert byte arrays to integers
-        intmbyter = int.from_bytes(mbyter, 'big')
-        intpbyter = int.from_bytes(pbyter, 'big')
-        # Check they are the same in length
-        self.assertEqual(len(mbyter), len(pbyter))
-        # Check they have the same value after conversion
-        self.assertEqual(intmbyter, intpbyter)
-
 
 if __name__ == "__main__":
     unittest.main()

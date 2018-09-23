@@ -63,20 +63,8 @@ class MoRFeus(object):
     # Housekeeping for remembering GUI vars when pressing the noise button
     initFreq = 433.92
 
-    # Convert integer(input) value to an length(8) byte sized array
-    # to be used for inserting our custom array starting at
-    # setFreq[3] to setFreq[10]
-    @classmethod
-    def int_2_bytes(cls, value, length):
-        result = []
-        for i in range(0, length):
-            result.append(int(value) >> (i * 8) & 0xff)
-        result.reverse()
-        # return the result
-        return result
-
     def writemsgbytes(self, value, array):
-        input_array = self.int_2_bytes(value, 8)
+        input_array = value.to_bytes(len(self.read_buffer), 'big')
         for x in range(3, 11):
             self.msgArray[x] = input_array[x - 3]
             array.append(self.msgArray[x])
