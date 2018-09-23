@@ -7,27 +7,29 @@ class MoRFeus(object):
         self.device = device
 
     @classmethod
-    def findmorfeus(cls):
-        for d in hid.enumerate(MoRFeus.vendorID, MoRFeus.productID):
-            keys = list(d.keys())
-            for key in keys:
-                if d[key] == MoRFeus.productID:
-                    return True
-
-    # init routine for moRFeus
-    @staticmethod
-    def initdevice():
+    def find(cls):
         while True:
             try:
-                device = hid.device()
-                # moRFeus VendorID/ProductID
-                device.open(MoRFeus.vendorID, MoRFeus.productID)
-                device.set_nonblocking(0)
-                return device
-            except IOError:
+                for d in hid.enumerate(MoRFeus.vendorID, MoRFeus.productID):
+                    keys = list(d.keys())
+                    for key in keys:
+                        if d[key] == MoRFeus.productID:
+                            return True
+                raise OSError
+            except OSError:
                 print('No moRFeus found... Retrying in 3 seconds')
                 sleep(3)
                 continue
+
+    # init routine for moRFeus
+    @classmethod
+    def initdevice(cls):
+        if cls.find():
+            device = hid.device()
+            # moRFeus VendorID/ProductID
+            device.open(MoRFeus.vendorID, MoRFeus.productID)
+            device.set_nonblocking(0)
+            return device
 
     # Information based of the protocol description by Abhishek on the othernet forum :
     # https://forums.othernet.is/t/rf-product-morfeus-frequency-converter-and-signal-generator/5025/59
@@ -65,7 +67,7 @@ class MoRFeus(object):
     # to be used for inserting our custom array starting at
     # setFreq[3] to setFreq[10]
     @classmethod
-    def int_to_bytes(cls, value, length):
+    def int_2_bytes(cls, value, length):
         result = []
         for i in range(0, length):
             result.append(int(value) >> (i * 8) & 0xff)
@@ -74,7 +76,7 @@ class MoRFeus(object):
         return result
 
     def writemsgbytes(self, value, array):
-        input_array = self.int_to_bytes(value, 8)
+        input_array = self.int_2_bytes(value, 8)
         for x in range(3, 11):
             self.msgArray[x] = input_array[x - 3]
             array.append(self.msgArray[x])

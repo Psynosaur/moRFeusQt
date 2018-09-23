@@ -2,7 +2,10 @@
 
 Simple cross platform tool for controlling moRFeus mixer/RF generator via the HID protocol.
 
-Product information : https://outernet.is/pages/morfeus
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d44e40b29adb45a994760b56facb284b)](https://www.codacy.com/app/Psynosaur/moRFeus_Qt?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Psynosaur/moRFeus_Qt&amp;utm_campaign=Badge_Grade)
+
+
+Product information : https://othernet.is/products/morfeus-1
 
 This tool was written in Python3 using :
 
