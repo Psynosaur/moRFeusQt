@@ -88,9 +88,9 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
                 for x in range(0, 16):
                     self.moRFeus.msgArray[x] = read_array[x]
                 for y in range(3, 11):
-                    self.moRFeus.buffer_array[y - 3] = self.moRFeus.msgArray[y]
+                    self.moRFeus.read_buffer[y - 3] = self.moRFeus.msgArray[y]
                 print('Read Data   : ', read_array)
-                reg = int.from_bytes(self.moRFeus.buffer_array, byteorder='big', signed=False)
+                reg = int.from_bytes(self.moRFeus.read_buffer, byteorder='big', signed=False)
                 hexy = hex(reg)[0:]
                 self.readReg.setText(hexy)
                 break

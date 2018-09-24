@@ -14,6 +14,7 @@ class MoRFeus(object):
                     keys = list(d.keys())
                     for key in keys:
                         if d[key] == MoRFeus.productID:
+                            print('moRFeus found . . .')
                             return True
                 raise OSError
             except OSError:
@@ -48,7 +49,6 @@ class MoRFeus(object):
     setMsg = [0, 119]
     # 8 byte value carrier
     read_buffer = [0, 0, 0, 0, 0, 0, 0, 0]
-    buffer_array = bytearray(read_buffer)
     # 6 byte trailers
     sixZero = [0, 0, 0, 0, 0, 0]
     # Function Constants
@@ -102,8 +102,8 @@ class MoRFeus(object):
             for x in range(3, 11):
                 self.msgArray[x] = read_array[x - 1]
                 # reads byte array and places it in 8 byte array to
-                self.buffer_array[x - 3] = self.msgArray[x]
-            init_values = int.from_bytes(self.buffer_array, byteorder='big', signed=False)
+                self.read_buffer[x - 3] = self.msgArray[x]
+            init_values = int.from_bytes(self.read_buffer, byteorder='big', signed=False)
             if read_array[1] == self.funcFrequency:
                 print('Freq :', str.format('{0:.6f}', init_values / self.mil))
                 self.initFreq = init_values / self.mil
