@@ -1,7 +1,9 @@
 # Main Loop
 import sys
+import signal
 from PyQt5.QtWidgets import QApplication
 from moRFeusQt import mrfqt as mRFsApp
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 
 def main():
