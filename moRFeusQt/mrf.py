@@ -22,7 +22,8 @@ class MoRFeus(object):
                     sleep(3)
                     continue
             except KeyboardInterrupt:
-                break
+                print('Good bye have a nice day!')
+                raise SystemExit(0)
 
     # init routine for moRFeus
     @classmethod
@@ -33,9 +34,6 @@ class MoRFeus(object):
             device.open(MoRFeus.vendorID, MoRFeus.productID)
             device.set_nonblocking(0)
             return device
-        else:
-            print('Good bye have a nice day!')
-            raise SystemExit(0)
 
     # Information based of the protocol description by Abhishek on the othernet forum :
     # https://forums.othernet.is/t/rf-product-morfeus-frequency-converter-and-signal-generator/5025/59
