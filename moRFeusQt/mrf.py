@@ -10,17 +10,19 @@ class MoRFeus(object):
     def find(cls):
         while True:
             try:
-                for d in hid.enumerate(MoRFeus.vendorID, MoRFeus.productID):
-                    keys = list(d.keys())
-                    for key in keys:
-                        if d[key] == MoRFeus.productID:
-                            print('moRFeus found . . .')
-                            return True
-                raise OSError
-            except OSError:
-                print('No moRFeus found... Retrying in 3 seconds')
-                sleep(3)
-                continue
+                try:
+                    for d in hid.enumerate(0, 0):
+                        keys = list(d.keys())
+                        for key in keys:
+                            if d[key] == MoRFeus.productID:
+                                return True
+                    raise OSError
+                except OSError:
+                    print('No moRFeus found... Retrying in 3 seconds')
+                    sleep(3)
+                    continue
+            except KeyboardInterrupt:
+                break
 
     # init routine for moRFeus
     @classmethod
@@ -31,6 +33,9 @@ class MoRFeus(object):
             device.open(MoRFeus.vendorID, MoRFeus.productID)
             device.set_nonblocking(0)
             return device
+        else:
+            print('Good bye have a nice day!')
+            raise SystemExit(0)
 
     # Information based of the protocol description by Abhishek on the othernet forum :
     # https://forums.othernet.is/t/rf-product-morfeus-frequency-converter-and-signal-generator/5025/59
