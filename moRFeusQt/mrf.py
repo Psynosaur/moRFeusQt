@@ -9,7 +9,6 @@ class MoRFeus(object):
     @classmethod
     def find(cls):
         while True:
-            try:
                 try:
                     for d in hid.enumerate(0, 0):
                         keys = list(d.keys())
@@ -21,9 +20,6 @@ class MoRFeus(object):
                     print('No moRFeus found... Retrying in 3 seconds')
                     sleep(3)
                     continue
-            except KeyboardInterrupt:
-                print('Good bye have a nice day!')
-                raise SystemExit(0)
 
     # init routine for moRFeus
     @classmethod

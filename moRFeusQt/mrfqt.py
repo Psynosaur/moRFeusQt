@@ -6,6 +6,7 @@ from moRFeusQt import mrfmorse
 from moRFeusQt import mrfui
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtCore import Qt
 
 
 class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
@@ -41,6 +42,10 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
         self.check5400()
         self.device.close()
         super().closeEvent(event)
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Escape:
+            self.close()
 
     def check5400(self):
         if self.startFreq.value() == 5400:
