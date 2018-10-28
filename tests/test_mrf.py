@@ -1,6 +1,8 @@
 import hid
 import unittest
+import os, sys
 from moRFeusQt import mrf
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 
 class TestMRFs(unittest.TestCase):

@@ -27,7 +27,7 @@ Installation and Usage
 
     $ git clone https://github.com/Psynosaur/moRFeus_Qt
     $ cd moRFeus_Qt
-    $ python -m pip install .
+    $ python setup.py install
     $ moRFeusQt.exe
 
 ### For Linux:
@@ -44,7 +44,7 @@ Installation and Usage
     $ sudo ./hidsetup.sh
 
 ###### Install local package
-    $ python3 -m pip install .
+    $ python3 setup.py install
     $ moRFeusQt
 
 ### For Mac OS:
@@ -66,4 +66,4 @@ From : https://brew.sh/
 
 #### Unit Tests
     
-    $ python -m unittest discover ./tests
+    $ python setup.py test

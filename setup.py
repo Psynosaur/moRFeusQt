@@ -7,12 +7,11 @@ if sys.version_info < (3, 5):
     sys.exit(1)
 
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
     print("Could not find setuptools")
     print("Try installing them with pip install setuptools")
     sys.exit(1)
-
 
 setup(
     name='moRFeusQt',
@@ -20,15 +19,16 @@ setup(
     version='1.693',
     author='Ohan Smit',
     author_email='psynosaur@gmail.com',
-    packages=['moRFeusQt'],
+    packages=find_packages(),
     license='LICENSE.txt',
     entry_points={
         'console_scripts': [
-              'moRFeusQt = moRFeusQt.__main__:main'
+            'moRFeusQt = moRFeusQt.__main__:main'
         ],
     },
-   install_requires=[
-       'PyQt5',
-       'hidapi',
-   ],
+    install_requires=[
+        'PyQt5',
+        'hidapi',
+    ],
+    test_suite='tests.mRF_test_suite',
 )
