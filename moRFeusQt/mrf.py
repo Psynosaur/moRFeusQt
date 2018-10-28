@@ -40,8 +40,8 @@ class MoRFeus(object):
     mil = 1000000  # Saves some zero's here and there
     SET = 1
     GET = 0
-    vendorID = 4292
-    productID = 60105
+    vendorID = 0x10c4
+    productID = 0xeac9
 
     msgArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     getMsg = [0, 114]
