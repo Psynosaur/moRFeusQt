@@ -27,7 +27,7 @@ setup(
         ],
     },
     install_requires=[
-        'PyQt5==5.10.1',
+        'PyQt5==5.11.2',
         'hidapi',
     ],
     test_suite='tests.mRF_test_suite',
