@@ -1,7 +1,7 @@
 import sys
 
-if sys.version_info < (3, 5):
-    print("You need at least Python 3.5 for this application!")
+if sys.version_info < (3, 6):
+    print("You need at least Python 3.6 for this application!")
     if sys.version_info[0] < 3:
         print("try running with python3 {}".format(" ".join(sys.argv)))
     sys.exit(1)
@@ -27,8 +27,9 @@ setup(
         ],
     },
     install_requires=[
-        'PyQt5',
+        'PyQt5==5.10.1',
         'hidapi',
     ],
     test_suite='tests.mRF_test_suite',
+
 )

@@ -33,7 +33,7 @@ Installation and Usage
 ### For Linux:
 #### Prerequisites
 ###### Python, libudev & libusb:
-    $ sudo apt install python3.5-dev python3-setuptools python3-pip libudev-dev libusb-1.0-0-dev
+    $ sudo apt install python3.6-dev python3-setuptools python3-pip libudev-dev libusb-1.0-0-dev
 
 ##### moRFeusQt Installation
 
