@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_mRFsMain(object):
     def setupUi(self, mRFsMain):
         mRFsMain.setObjectName("mRFsMain")
@@ -167,7 +168,7 @@ class Ui_mRFsMain(object):
 
     def retranslateUi(self, mRFsMain):
         _translate = QtCore.QCoreApplication.translate
-        mRFsMain.setWindowTitle(_translate("mRFsMain", "moRFeus Qt v1.693"))
+        mRFsMain.setWindowTitle(_translate("mRFsMain", "moRFeus Qt v2.369"))
         self.powerInput.setToolTip(_translate("mRFsMain", "Set Device Current"))
         self.label_6.setText(_translate("mRFsMain", "Steps"))
         self.biasOn.setToolTip(_translate("mRFsMain", "Set BiasTee On"))

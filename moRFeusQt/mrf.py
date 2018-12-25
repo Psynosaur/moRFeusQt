@@ -3,34 +3,6 @@ from time import sleep
 
 
 class MoRFeus(object):
-    def __init__(self, device):
-        self.device = device
-
-    @classmethod
-    def find(cls):
-        while True:
-                try:
-                    for d in hid.enumerate(0, 0):
-                        keys = list(d.keys())
-                        for key in keys:
-                            if d[key] == MoRFeus.productID:
-                                return True
-                    raise OSError
-                except OSError:
-                    print('No moRFeus found... Retrying in 3 seconds')
-                    sleep(3)
-                    continue
-
-    # init routine for moRFeus
-    @classmethod
-    def initdevice(cls):
-        if cls.find():
-            device = hid.device()
-            # moRFeus VendorID/ProductID
-            device.open(MoRFeus.vendorID, MoRFeus.productID)
-            device.set_nonblocking(0)
-            return device
-
     # Information based of the protocol description by Abhishek on the othernet forum :
     # https://forums.othernet.is/t/rf-product-morfeus-frequency-converter-and-signal-generator/5025/59
 
@@ -61,6 +33,38 @@ class MoRFeus(object):
 
     # Housekeeping for remembering GUI vars when pressing the noise button
     initFreq = 433.92
+
+    def __init__(self, device):
+        self.device = device
+
+    @classmethod
+    def find(cls) -> int:
+        while True:
+                try:
+                    count = 0
+                    for d in hid.enumerate(0, 0):
+                        keys = list(d.keys())
+                        for key in keys:
+                            if d[key] == MoRFeus.productID:
+                                count = count + 1
+                    if count == 0:
+                        raise OSError
+                    else:
+                        return count
+                except OSError:
+                    print('\nNo moRFeus found... Retrying in 5 seconds')
+                    sleep(5)
+                    continue
+
+    # init routine for moRFeus
+    @classmethod
+    def initdevice(cls, vid=vendorID, pid=productID, index=0):
+            mrfdevice = hid.enumerate(vid, pid)[index]
+            device = hid.device()
+            # moRFeus VendorID/ProductID
+            device.open_path(mrfdevice['path'])
+            device.set_nonblocking(0)
+            return device
 
     def writemsgbytes(self, value, array):
         input_array = value.to_bytes(len(self.read_buffer), 'big')
