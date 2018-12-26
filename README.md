@@ -4,13 +4,9 @@ Simple cross platform tool for controlling moRFeus mixer/RF generator via the HI
 
 ##### Future features 
 - [x] Multi Device Support
+- [x] TCP Support Basic Sending to GQRX 
 - [ ] Threading
-- [ ] TCP Support
     
-
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d44e40b29adb45a994760b56facb284b)](https://www.codacy.com/app/Psynosaur/moRFeus_Qt?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Psynosaur/moRFeus_Qt&amp;utm_campaign=Badge_Grade)
-
-
 Product information : https://othernet.is/products/morfeus-1
 
 This tool was written in Python3 using :
@@ -27,27 +23,27 @@ Installation and Usage
 
     https://www.python.org/downloads/release/python-365/
 
-##### moRFeusQt installation and execution 
+##### moRFeusQt installation and execution (PowerShell or cmd)
 
-    $ pip install morfeusqt
-    $ moRFeusQt
+    pip install morfeusqt
+    moRFeusQt
 
 ### For Linux:
 #### Prerequisites
-###### Python, libudev & libusb:
-    $ sudo apt install git python3.6-dev python3-setuptools python3-pip libudev-dev libusb-1.0-0-dev
+###### Python, libudev & libusb: 
+    sudo apt install git python3.6-dev python3-setuptools python3-pip libudev-dev libusb-1.0-0-dev
 
 ##### moRFeusQt Installation
 
-    $ git clone https://github.com/Psynosaur/moRFeus_Qt && cd moRFeus_Qt
+    git clone https://github.com/Psynosaur/moRFeus_Qt && cd moRFeus_Qt
 
 ###### Removing sudo requirement for udev usb raw access :
 
-    $ sudo ./hidsetup.sh
+    sudo ./hidsetup.sh
 
 ###### Install local package
-    $ pip install .
-    $ moRFeusQt
+    pip install .
+    moRFeusQt
 
 ### For Mac OS:
 #### Prerequisites
