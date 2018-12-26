@@ -13,13 +13,18 @@ except ImportError:
     print("Try installing them with pip install setuptools")
     sys.exit(1)
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name='moRFeusQt',
     url='https://github.com/Psynosaur/moRFeus_Qt',
-    version='2.369',
+    version='2.639',
     author='Ohan Smit',
     author_email='psynosaur@gmail.com',
     packages=find_packages(),
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     license='LICENSE.txt',
     entry_points={
         'console_scripts': [

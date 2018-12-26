@@ -8,34 +8,35 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 class TestMRFs(unittest.TestCase):
 
     @classmethod
-    def mockdevice(cls, vid=mrf.MoRFeus.vendorID, pid=mrf.MoRFeus.productID, index=0):
+    def mockdevice(cls):
         # hard code the opening of the morfeus device and return
-        mrfdevice = hid.enumerate(vid, pid)[index]
         td = hid.device()
-        td.open_path(mrfdevice['path'])
+        td.open(mrf.MoRFeus.vendorID, mrf.MoRFeus.productID)
         td.set_nonblocking(0)
         return td
 
     def test_find(self):
-        # If the device isn't found, test do not continue
+        # If the device isn't found, tests do not continue
         cond = mrf.MoRFeus.find()
-        self.assertTrue(cond)
+        print(cond, "Devices found")
+        self.assertTrue((cond >= 1))
 
     def test_initdevice(self):
-        # init two test devices, one from morfeus class and another from mockdevice
+        # init test devices from morfeus class, as many as are connected
         devicecount = mrf.MoRFeus.find()
         devices = []
         testdevices = []
         for i in range(0, devicecount):
-            devices.append(mrf.MoRFeus.initdevice(i))
-            # testdevices.append(self.mockdevice(i))
+            devices.append(mrf.MoRFeus.initdevice(index=i))
+            testdevices.append(devices[i])
+            # testdevices.append(self.mockdevice())
             # Check types
-            self.assertEqual(type(devices), type(testdevices))
-            # Check if 'td1' is and instance of type 'td2'(hard opened hid.device)
-            # self.assertIsInstance(td1, type(td2))
+            self.assertEqual(type(devices[i]), type(testdevices[i]))
+            # Check if 'devices[i]' is and instance of type 'testdevice[i]'
+            self.assertIsInstance(devices[i], type(testdevices[i]))
             # Close the devices
-            # td1.close()
-            # td2.close()
+            devices[i].close()
+            testdevices[i].close()
 
 
 if __name__ == "__main__":
