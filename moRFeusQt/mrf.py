@@ -1,5 +1,4 @@
 import hid
-import threading
 from time import sleep
 
 

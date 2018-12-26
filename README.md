@@ -21,25 +21,21 @@ This tool was written in Python3 using :
 
 Installation and Usage
 ============
-##### The following instructions assume that you have a git environment installed...
-
 ### For Windows:
 #### Prerequisites
 ###### Python 3 :
 
     https://www.python.org/downloads/release/python-365/
 
-##### moRFeusQt Installation
+##### moRFeusQt installation and execution 
 
-    $ git clone https://github.com/Psynosaur/moRFeus_Qt
-    $ cd moRFeus_Qt
-    $ python setup.py install
-    $ moRFeusQt.exe
+    $ pip install morfeusqt
+    $ moRFeusQt
 
 ### For Linux:
 #### Prerequisites
 ###### Python, libudev & libusb:
-    $ sudo apt install python3.6-dev python3-setuptools python3-pip libudev-dev libusb-1.0-0-dev
+    $ sudo apt install git python3.6-dev python3-setuptools python3-pip libudev-dev libusb-1.0-0-dev
 
 ##### moRFeusQt Installation
 
@@ -50,7 +46,7 @@ Installation and Usage
     $ sudo ./hidsetup.sh
 
 ###### Install local package
-    $ python3 setup.py install
+    $ pip install .
     $ moRFeusQt
 
 ### For Mac OS:
