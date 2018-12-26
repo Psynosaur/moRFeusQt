@@ -8,16 +8,17 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 
 def main():
-    app = QApplication(sys.argv)
+    apps = []
     devicecount = mrf.MoRFeus.find()
     devices = []
     for i in range(0, devicecount):
+        apps.append(QApplication(sys.argv))
         devices.append(mRFsApp.MoRFeusQt(i))
         print('--------------------\nmoRFeus Dev', i, 'Stats\n--------------------')
         devices[i].getStats()
         print('--------------------\nDevice Output\n--------------------')
         devices[i].show()
-    sys.exit(app.exec_())
+        sys.exit(apps[i].exec_())
 
 
 if __name__ == "__main__":
