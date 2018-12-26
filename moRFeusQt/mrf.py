@@ -1,4 +1,5 @@
 import hid
+import threading
 from time import sleep
 
 
@@ -45,8 +46,8 @@ class MoRFeus(object):
                     for d in hid.enumerate(0, 0):
                         keys = list(d.keys())
                         for key in keys:
-                            if d[key] == MoRFeus.productID:
-                                count = count + 1
+                            if d[key] == cls.productID:
+                                count += 1
                     if count == 0:
                         raise OSError
                     else:
