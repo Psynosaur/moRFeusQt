@@ -2,10 +2,14 @@
 
 Simple cross platform tool for controlling moRFeus mixer/RF generator via the HID protocol.
 
-##### Future features 
+##### Features currently in development 
 - [x] Multi Device Support
-- [x] TCP Support Basic Sending to GQRX 
-- [ ] Threading
+- [x] TCP Support Basic Sending to GQRX
+- [x] Draws a power reading plot from GQRX
+- [ ] VSWR sequence
+- [ ] TCP server to control device remotely
+- [ ] Support for Multiple SDR TCP protocols(rtl_tcp, soapytcp, etc.)
+- [ ] Threading and progress bars
     
 Product information : https://othernet.is/products/morfeus-1
 
@@ -31,7 +35,7 @@ Installation and Usage
 ### For Linux:
 #### Prerequisites
 ###### Python, libudev & libusb: 
-    sudo apt install git python3.6-dev python3-setuptools python3-pip libudev-dev libusb-1.0-0-dev
+    sudo apt install git python3.6-dev python3-setuptools python3-pip libudev-dev libusb-1.0-0-dev python3-tk
 
 ##### moRFeusQt Installation
 

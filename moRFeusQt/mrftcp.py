@@ -9,17 +9,32 @@ class GqRX(object):
     def __init__(self, addr):
         self.addr = addr
 
-    def send(self, msg):
+    def IsThere(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             s.connect((self.addr, self.TCP_PORT))
-            s.send(str.encode(msg))
-            data = s.recv(self.BUFFER_SIZE)
+            return s
+        except OSError or IOError:
+            return False
+
+    def SetFreq(self, msg)-> bool:
+        tcp = self.IsThere()
+        if tcp:
+            tcp.send(str.encode('F ' + msg))
+            tcp.close()
+            return True
+        else:
+            return False
+
+    def GetStrength(self) -> bytes:
+        tcp = self.IsThere()
+        if tcp:
+            tcp.send(str.encode('l STRENGTH'))
+            data = tcp.recv(self.BUFFER_SIZE)
+            tcp.close()
             return data
-        except Exception as e:
-            print("GQRX at %s:%d. says %s" % (self.addr, self.TCP_PORT, e))
-        finally:
-            s.close()
+
+
 
 
 

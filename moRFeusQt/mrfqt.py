@@ -5,6 +5,7 @@ from moRFeusQt import mrf
 from moRFeusQt import mrfmorse
 from moRFeusQt import mrfui
 from moRFeusQt import mrftcp
+from moRFeusQt import mrfplot
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtCore import Qt
@@ -215,6 +216,8 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
         self.curQt()
         y = 1
         sock = mrftcp.GqRX('127.0.0.1')
+        powah = []
+        freq = []
         self.moRFeus.printProgressBar(0, stepcount, prefix='Sweep :', suffix='', length=43)
         while True:
             if stepcount == 0:
@@ -223,12 +226,22 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
             else:
                 for x in self.freqRange(start_freq + step, end_freq, step):
                     self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, (x / self.moRFeus.mil))
-                    sock.send("F {0:8.6f}".format(x))
+                    if sock.IsThere():
+                        sock.SetFreq("{0:8.6f}".format(x))
                     self.moRFeus.printProgressBar(y, stepcount, prefix='Sweep Prog    : ', suffix='', length=43)
                     time.sleep(delay / 1000)
                     y += 1
+                    if sock.IsThere():
+                        power = sock.GetStrength().decode("utf-8")
+                        freq.append(x/self.moRFeus.mil)
+                        powah.append(float(power[:-2]))
+                        # print(x, float(power[:-2]))
+                        # print(freq, powah)
                 self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, self.startFreq.value())
-                sock.send("F {0:8.6f}".format(start_freq))
+                if sock.IsThere():
+                    sock.SetFreq("{0:8.6f}".format(start_freq))
+                    mrfplot.MorfeusPlot.drawgrap(freq, powah)
+                    # print((powah, freq))
                 break
 
     # Sending of morse code via current switch, 0 is off 1 is on
