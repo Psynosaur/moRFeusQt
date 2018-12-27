@@ -168,7 +168,7 @@ class Ui_mRFsMain(object):
 
     def retranslateUi(self, mRFsMain):
         _translate = QtCore.QCoreApplication.translate
-        mRFsMain.setWindowTitle(_translate("mRFsMain", "moRFeus Qt v2.369"))
+        mRFsMain.setWindowTitle(_translate("mRFsMain", "moRFeus Qt v3.123"))
         self.powerInput.setToolTip(_translate("mRFsMain", "Set Device Current"))
         self.label_6.setText(_translate("mRFsMain", "Steps"))
         self.biasOn.setToolTip(_translate("mRFsMain", "Set BiasTee On"))

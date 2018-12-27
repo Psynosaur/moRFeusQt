@@ -19,7 +19,7 @@ with open("README.md", "r") as fh:
 setup(
     name='moRFeusQt',
     url='https://github.com/Psynosaur/moRFeus_Qt',
-    version='2.639',
+    version='3.123',
     author='Ohan Smit',
     author_email='psynosaur@gmail.com',
     packages=find_packages(),

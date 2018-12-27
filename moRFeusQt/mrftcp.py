@@ -14,7 +14,7 @@ class GqRX(object):
         try:
             s.connect((self.addr, self.TCP_PORT))
             return s
-        except OSError or IOError:
+        except IOError:
             return False
 
     def SetFreq(self, msg)-> bool:
