@@ -243,6 +243,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
                 if sock.IsConnected():
                     end = time.time()
                     sock.SetFreq("{0:8.6f}".format(start_freq))
+                    sock.Close()
                     dwelltime = (self.delay.value(), 'ms', (end - start), 'seconds')
                     mrfplot.MorfeusPlot.drawgrap(freq, powah, dwelltime)
                     # print((powah, freq))
