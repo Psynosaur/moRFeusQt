@@ -214,7 +214,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
         delay = self.delay.value()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 1)
         self.curQt()
-        y = 1
+        y = 0
         sock = mrftcp.GqRX('127.0.0.1')
         powah = []
         freq = []
@@ -224,7 +224,8 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
                 print("NULL Range  :")
                 break
             else:
-                for x in self.freqRange(start_freq + step, end_freq, step):
+                start = time.time()
+                for x in self.freqRange(start_freq, end_freq, step):
                     self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, (x / self.moRFeus.mil))
                     if sock.IsThere():
                         sock.SetFreq("{0:8.6f}".format(x))
@@ -234,13 +235,16 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
                     if sock.IsThere():
                         power = sock.GetStrength().decode("utf-8")
                         freq.append(x/self.moRFeus.mil)
+                        # powah.append((float(power[:-2]) + 26))
                         powah.append(float(power[:-2]))
                         # print(x, float(power[:-2]))
                         # print(freq, powah)
                 self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, self.startFreq.value())
                 if sock.IsThere():
+                    end = time.time()
                     sock.SetFreq("{0:8.6f}".format(start_freq))
-                    mrfplot.MorfeusPlot.drawgrap(freq, powah)
+                    dwelltime = (self.delay.value(), 'ms', (end - start), 'seconds')
+                    mrfplot.MorfeusPlot.drawgrap(freq, powah, dwelltime)
                     # print((powah, freq))
                 break
 

@@ -6,6 +6,7 @@ Simple cross platform tool for controlling moRFeus mixer/RF generator via the HI
 - [x] Multi Device Support
 - [x] TCP Support Basic Sending to GQRX
 - [x] Draws a power reading plot from GQRX
+   - [ ] TL offset dB (y-axis)
 - [ ] VSWR sequence
 - [ ] TCP server to control device remotely
 - [ ] Support for Multiple SDR TCP protocols(rtl_tcp, soapytcp, etc.)
