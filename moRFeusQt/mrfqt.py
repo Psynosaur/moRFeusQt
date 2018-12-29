@@ -227,12 +227,12 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
                 start = time.time()
                 for x in self.freqRange(start_freq, end_freq, step):
                     self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, (x / self.moRFeus.mil))
-                    if sock.IsThere():
+                    if sock.IsConnected():
                         sock.SetFreq("{0:8.6f}".format(x))
                     self.moRFeus.printProgressBar(y, stepcount, prefix='Sweep Prog    : ', suffix='', length=43)
                     time.sleep(delay / 1000)
                     y += 1
-                    if sock.IsThere():
+                    if sock.IsConnected():
                         power = sock.GetStrength().decode("utf-8")
                         freq.append(x/self.moRFeus.mil)
                         # powah.append((float(power[:-2]) + 26))
@@ -240,7 +240,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
                         # print(x, float(power[:-2]))
                         # print(freq, powah)
                 self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, self.startFreq.value())
-                if sock.IsThere():
+                if sock.IsConnected():
                     end = time.time()
                     sock.SetFreq("{0:8.6f}".format(start_freq))
                     dwelltime = (self.delay.value(), 'ms', (end - start), 'seconds')
