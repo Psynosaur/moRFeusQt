@@ -35,7 +35,6 @@ setup(
         'PyQt5==5.11.2',
         'hidapi',
         'matplotlib',
-        'numpy',
     ],
     test_suite='tests.mRF_test_suite',
 

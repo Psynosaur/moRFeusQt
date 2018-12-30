@@ -38,6 +38,19 @@ class TestMRFs(unittest.TestCase):
             devices[i].close()
             testdevices[i].close()
 
+    # def test_tcp(self):
+        # g = GqRX('127.0.0.1')
+        # print(g.IsConnected())
+        # print(g.GetFreq())
+        # print(g.GetStrength())
+        # print(g.GetMod())
+        # print(g.GetSQL())
+        # print(g.GetAudioRec())
+        # print(g.SetFreq('85000000'))
+        # print(g.SetMod('FM', '10000'))
+        # print(g.SetSQL('-140.0'))
+        # print(g.Close())
+
 
 if __name__ == "__main__":
     unittest.main()
