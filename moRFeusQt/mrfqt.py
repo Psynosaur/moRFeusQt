@@ -44,6 +44,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
 
         self.check5400()
         self.device.close()
+        mrfplot.MorfeusPlot.close()
         super().closeEvent(event)
 
     def keyPressEvent(self, event):
