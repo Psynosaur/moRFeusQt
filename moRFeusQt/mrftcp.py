@@ -1,6 +1,6 @@
 import socket
 
-'''
+"""
     http://gqrx.dk/doc/remote-control#more-162
     
     These are the commands used in this applications
@@ -12,12 +12,12 @@ import socket
      l STRENGTH - Get signal strength [dBFS]
      l SQL - Get squelch threshold [dBFS]
      L SQL <sql> - Set squelch threshold to <sql> [dBFS]
-     q - Close connection ( Documentation says 'c ' this in incorrect ) 
+     q - Close connection ( Documentation says 'c ' this in incorrect )
      
      Responses :
          RPRT 0 - Command successful
-         RPRT 1 - Command failed 
-'''
+         RPRT 1 - Command failed
+"""
 
 
 class GqRX(object):

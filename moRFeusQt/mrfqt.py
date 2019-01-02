@@ -244,8 +244,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
                     sock.Close()
                     dwelltime = (self.delay.value(), 'ms dwell', (end - start), 'sec',
                                  (self.stepSize.value()/1000), 'MHz')
-                    mrfplot.MorfeusPlot.drawgrap(freq, powah, dwelltime)
-                    # print((powah, freq))
+                    mrfplot.MorfeusPlot.drawgraph(freq, powah, dwelltime)
                     break
                 else:
                     start = time.time()
