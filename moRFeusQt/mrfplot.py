@@ -1,6 +1,7 @@
 import matplotlib
-import matplotlib.pyplot as mplt
 matplotlib.use('Qt5Agg')
+import matplotlib.pyplot as mplt
+
 
 
 class MorfeusPlot(object):
