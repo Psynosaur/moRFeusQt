@@ -4,7 +4,6 @@ import time
 from moRFeusQt import mrf
 from moRFeusQt import mrfmorse
 from moRFeusQt import mrfui
-from moRFeusQt import mrftcp
 from moRFeusQt import mrfplot
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtWidgets import QMainWindow
@@ -121,15 +120,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
         # read and then set response from device
         self.moRFeus.readDevice()
 
-    # loop for moving upward in frequency (increases with step)
-    @classmethod
-    def freqRange(cls, start, end, step):
-        while start <= end:
-            yield start
-            start += step
-
     # The Set functions
-
     def setHops(self):
         self.endFreq.setValue(self.startFreq.value() + ((self.stepSize.value() / 1000) * self.steps.value()))
         # self.stepSize.setValue(abs(self.endFreq.value() - self.startFreq.value()))
@@ -211,59 +202,8 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
     # Frequency sweep routine, still needs a means to break out of
     # loop on some event..
     def sweepQt(self):
-        start_freq = self.startFreq.value()
-        start_freq = int(start_freq * self.moRFeus.mil)
-        end_freq = self.endFreq.value()
-        end_freq = int(end_freq * self.moRFeus.mil)
-        step = self.stepSize.value()
-        step = int(step * 1000)
-        stepcount = int((end_freq - start_freq) / step)
-        delay = self.delay.value()
-        self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 1)
-        self.curQt()
-        y = 0
-        sock = mrftcp.GqRX('127.0.0.1')
-        powah = []
-        freq = []
-        self.moRFeus.printProgressBar(0, stepcount, prefix='Sweep :', suffix='', length=43)
-        while True:
-            if stepcount == 0:
-                print("NULL Range  :")
-                break
-            else:
-                if sock.IsConnected():
-                    start = time.time()
-                    for x in self.freqRange(start_freq, end_freq, step):
-                        self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, (x / self.moRFeus.mil))
-                        sock.SetFreq("{0:8.6f}".format(x))
-                        self.moRFeus.printProgressBar(y, stepcount, prefix='Sweep Prog    : ', suffix='', length=43)
-                        time.sleep(delay / 1000)
-                        y += 1
-                        power = sock.GetStrength()
-                        freq.append(x/self.moRFeus.mil)
-                        # powah.append((float(power[:-2]) + 26))
-                        powah.append(float(power[:-2]))
-                        # print(x, float(power[:-2]))
-                        # print(freq, powah)
-                    self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, self.startFreq.value())
-                    end = time.time()
-                    sock.SetFreq("{0:8.6f}".format(start_freq))
-                    sock.Close()
-                    dwelltime = (self.delay.value(), 'ms dwell', (end - start), 'sec',
-                                 (self.stepSize.value()/1000), 'MHz')
-                    mrfplot.MorfeusPlot.drawgraph(freq, powah, dwelltime)
-                    break
-                else:
-                    start = time.time()
-                    for x in self.freqRange(start_freq, end_freq, step):
-                        self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, (x / self.moRFeus.mil))
-                        self.moRFeus.printProgressBar(y, stepcount, prefix='Sweep Prog    : ', suffix='', length=43)
-                        time.sleep(delay / 1000)
-                        y += 1
-                    self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, self.startFreq.value())
-                    end = time.time()
-                    print(end - start)
-                    break
+        # self.curQt()
+        self.moRFeus.sweepfreq(self.startFreq.value(), self.endFreq.value(), self.stepSize.value(), self.delay.value())
 
     # Sending some mors code
     def sendMorse(self):

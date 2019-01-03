@@ -2,6 +2,8 @@
 
 Simple cross platform tool for controlling moRFeus mixer/RF generator via the HID protocol.
 
+Product information : https://othernet.is/products/morfeus-1
+
 ##### Features currently in development 
 - [x] Multi Device Support
 - [x] TCP Support Basic Sending to GQRX
@@ -12,14 +14,6 @@ Simple cross platform tool for controlling moRFeus mixer/RF generator via the HI
 - [ ] Support for Multiple SDR TCP protocols(rtl_tcp, soapytcp, etc.)
 - [ ] Threading and progress bars
     
-Product information : https://othernet.is/products/morfeus-1
-
-This tool was written in Python3 using :
-
-1. ##### hidapi :   `https://github.com/trezor/cython-hidapi`
-
-2. ##### PyQt5  :   `https://pypi.org/project/PyQt5/`
-
 Installation and Usage
 ============
 ### For Windows:

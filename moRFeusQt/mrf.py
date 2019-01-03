@@ -1,5 +1,7 @@
 import hid
-from time import sleep
+import time as t
+from moRFeusQt import mrftcp
+from moRFeusQt import mrfplot
 
 
 class MoRFeus(object):
@@ -53,7 +55,7 @@ class MoRFeus(object):
                         return count
                 except OSError:
                     print('\nNo moRFeus found... Retrying in 5 seconds')
-                    sleep(5)
+                    t.sleep(5)
                     continue
 
     # init routine for moRFeus
@@ -132,8 +134,71 @@ class MoRFeus(object):
                 if init_values == 1:
                     print("Bias : On")
 
-    @classmethod
-    def printProgressBar(cls, iteration, total, prefix='', suffix='', decimals=1, length=100, fill='|'):
+    # loop for moving upward in frequency (increases with step)
+    def freqRange(self, start, end, step):
+        while start <= end:
+            yield start
+            start += step
+
+    # Frequency sweep routine, still needs a means to break out of
+    # loop on some event..
+    def sweepfreq(self, start, end, step, delay):
+        start_freq = start
+        start_freq = int(start_freq * self.mil)
+        end_freq = end
+        end_freq = int(end_freq * self.mil)
+        step = step
+        step = int(step * 1000)
+        stepcount = int((end_freq - start_freq) / step)
+        delay = delay
+        self.message(self.SET, self.funcMixGen, 1)
+        # self.curQt()
+        y = 0
+        sock = mrftcp.GqRX('127.0.0.1')
+        powah = []
+        freq = []
+        self.printProgressBar(0, stepcount, prefix='Sweep :', suffix='', length=43)
+        while True:
+            if stepcount == 0:
+                print("NULL Range  :")
+                break
+            else:
+                if sock.IsConnected():
+                    starttime = t.time()
+                    for x in self.freqRange(start_freq, end_freq, step):
+                        self.message(self.SET, self.funcFrequency, (x / self.mil))
+                        sock.SetFreq("{0:8.6f}".format(x))
+                        self.printProgressBar(y, stepcount, prefix='Sweep Prog    : ', suffix='', length=43)
+                        t.sleep(delay / 1000)
+                        y += 1
+                        power = sock.GetStrength()
+                        freq.append(x / self.mil)
+                        # powah.append((float(power[:-2]) + 26))
+                        powah.append(float(power[:-2]))
+                        # mrfplot.MorfeusPlot.liveplot(x/self.moRFeus.mil, float(power[:-2]))
+                        # print(x, float(power[:-2]))
+                        # print(freq, powah)
+                    self.message(self.SET, self.funcFrequency, start)
+                    endtime = t.time()
+                    sock.SetFreq("{0:8.6f}".format(start_freq))
+                    sock.Close()
+                    dwelltime = (delay, 'ms dwell', (endtime - starttime), 'sec',
+                                 (step / 1000), 'MHz')
+                    mrfplot.MorfeusPlot.drawgraph(freq, powah, dwelltime)
+                    break
+                else:
+                    starttime = t.time()
+                    for x in self.freqRange(start_freq, end_freq, step):
+                        self.message(self.SET, self.funcFrequency, (x / self.mil))
+                        self.printProgressBar(y, stepcount, prefix='Sweep Prog    : ', suffix='', length=43)
+                        t.sleep(delay / 1000)
+                        y += 1
+                    self.message(self.SET, self.funcFrequency, start)
+                    endtime = t.time()
+                    print(endtime - starttime)
+                    break
+
+    def printProgressBar(self, iteration, total, prefix='', suffix='', decimals=1, length=100, fill='|'):
         """
         Call in a loop to create terminal progress bar
         @params:
