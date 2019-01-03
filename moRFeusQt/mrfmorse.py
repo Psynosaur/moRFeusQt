@@ -32,3 +32,20 @@ class MorseCode(object):
         sleep(0.5)
         self.switch(0)
         sleep(0.2)
+
+    # Sending of morse code via current switch, 0 is off 1 is on
+    def send(self, devindex, msg):
+        while True:
+            morse_input = msg
+            for letter in morse_input:
+                for symbol in self.MORSE[letter.upper()]:
+                    if symbol == '-':
+                        self.dash()
+                    else:
+                        if symbol == '.':
+                            self.dot()
+                        else:
+                            sleep(0.5)
+                sleep(0.5)
+            print(devindex, "Mors        :  " + morse_input)
+            break

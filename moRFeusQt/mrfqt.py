@@ -23,6 +23,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
         self.startFreq.editingFinished.connect(self.statfreqQt)
         self.startFreq.valueChanged.connect(self.setEnd)
         self.stepSize.valueChanged.connect(self.setStep)
+        self.stepSize.editingFinished.connect(self.setStep)
         self.powerInput.editingFinished.connect(self.curQt)
         self.steps.editingFinished.connect(self.setHops)
         self.mixButton.clicked.connect(self.mixQt)
@@ -158,13 +159,18 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
         print(self.devindex, "Bias         :  Off")
 
     # Setting of the device current
-    def curQt(self):
+    def curQt(self, cur=None):
         while self.device:
             try:
-                cur = self.powerInput.value()
-                self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcCurrent, cur)
-                print(self.devindex, "Current     : ", cur)
-                break
+                if cur in range(0, 7):
+                    self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcCurrent, cur)
+                    print(self.devindex, "Current     : ", cur)
+                    break
+                else:
+                    cur = self.powerInput.value()
+                    self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcCurrent, cur)
+                    print(self.devindex, "Current     : ", cur)
+                    break
             except ValueError:
                 break
 
@@ -197,7 +203,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
     # Set to max mixer frequency to create wideband noise
     def noiseQt(self):
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 1)
-        self.curQt()
+        self.curQt(self.powerInput.value())
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, 5400)
         self.startFreq.setValue(5400)
         print(self.devindex, 'Such Noise  :')
@@ -214,7 +220,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
         stepcount = int((end_freq - start_freq) / step)
         delay = self.delay.value()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 1)
-        self.curQt()
+        self.curQt(self.powerInput.value())
         y = 0
         sock = mrftcp.GqRX('127.0.0.1')
         powah = []
@@ -259,20 +265,13 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
                     print(end - start)
                     break
 
-    # Sending of morse code via current switch, 0 is off 1 is on
+    # Sending some mors code
     def sendMorse(self):
-        while True:
-            morse_input = self.morseInput.text()
-            for letter in morse_input:
-                for symbol in self.morseCode.MORSE[letter.upper()]:
-                    if symbol == '-':
-                        self.morseCode.dash()
-                    else:
-                        if symbol == '.':
-                            self.morseCode.dot()
-                        else:
-                            time.sleep(0.5)
-                time.sleep(0.5)
-            print(self.devindex, "Mors        :  " + morse_input)
-            break
-        self.curQt()
+        # set the current to 0 for the first character to be visible if the CW was there
+        self.curQt(0)
+        # sleep some time, same as end of message
+        time.sleep(0.5)
+        # send the message
+        self.morseCode.send(self.devindex, self.morseInput.text())
+        # set the current back to what it was
+        self.curQt(self.powerInput.value())
