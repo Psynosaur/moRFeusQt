@@ -39,7 +39,7 @@ class GqRX(object):
     def IsConnected(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            s.settimeout(0.1)
+            s.settimeout(0.25)
             s.connect((self.Address, self.TCP_PORT))
             return s
         except IOError:

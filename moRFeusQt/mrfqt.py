@@ -203,7 +203,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
     # Set to max mixer frequency to create wideband noise
     def noiseQt(self):
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 1)
-        self.curQt(self.powerInput.value())
+        self.curQt()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcFrequency, 5400)
         self.startFreq.setValue(5400)
         print(self.devindex, 'Such Noise  :')
@@ -220,7 +220,7 @@ class MoRFeusQt(QMainWindow, mrfui.Ui_mRFsMain):
         stepcount = int((end_freq - start_freq) / step)
         delay = self.delay.value()
         self.moRFeus.message(self.moRFeus.SET, self.moRFeus.funcMixGen, 1)
-        self.curQt(self.powerInput.value())
+        self.curQt()
         y = 0
         sock = mrftcp.GqRX('127.0.0.1')
         powah = []
