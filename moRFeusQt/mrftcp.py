@@ -1,10 +1,12 @@
 import socket
 
-"""
+
+class GqRX(object):
+    """
     http://gqrx.dk/doc/remote-control#more-162
-    
-    These are the commands used in this applications
-    
+
+    These are the commands used in this TCP Protocol
+
      f - Get frequency [Hz]
      F - Set frequency [Hz]
      m - Get demodulator mode
@@ -13,17 +15,16 @@ import socket
      l SQL - Get squelch threshold [dBFS]
      L SQL <sql> - Set squelch threshold to <sql> [dBFS]
      q - Close connection ( Documentation says 'c ' this in incorrect )
-     
-     Responses :
-         RPRT 0 - Command successful
-         RPRT 1 - Command failed
-"""
 
+    Responses :
+        RPRT 0 - Command successful
+        RPRT 1 - Command failed
+    """
 
-class GqRX(object):
     # Constants
     BUFFER_SIZE = 1024
     TCP_PORT = 7356
+    TIMEOUT = 0.25
 
     def __init__(self, a):
         self.__Address = a
@@ -39,7 +40,7 @@ class GqRX(object):
     def IsConnected(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            s.settimeout(0.25)
+            s.settimeout(self.TIMEOUT)
             s.connect((self.Address, self.TCP_PORT))
             return s
         except IOError:
@@ -107,7 +108,7 @@ class GqRX(object):
             tcp.send(str.encode(message))
             data = tcp.recv(self.BUFFER_SIZE)
             tcp.close()
-            return data
+            return data and True
         else:
             return False
 
@@ -135,4 +136,36 @@ class GqRX(object):
         else:
             return False
 
+#
+# class soapyTCP(object):
+#     # Constants
+#     BUFFER_SIZE = 1024
+#     TCP_PORT = 7356
+#     TIMEOUT = 0.25
+#
+#     def __init__(self, a):
+#         self.__Address = a
+#
+#     @property
+#     def Address(self):
+#         return self.__Address
+#
+#     @Address.setter
+#     def Address(self, val):
+#         pass
+#
+#     def IsConnected(self):
+#         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#         try:
+#             s.settimeout(self.TIMEOUT)
+#             s.connect((self.Address, self.TCP_PORT))
+#             return s
+#         except IOError:
+#             return False
+#
+#     def Close(self):
+#         tcp = self.IsConnected()
+#         if tcp:
+#             tcp.send(str.encode('q '))
+#             tcp.close()
 

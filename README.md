@@ -16,6 +16,8 @@ Product information : https://othernet.is/products/morfeus-1
     
 Installation and Usage
 ============
+If you'd like the power readings from GQRX, have it running with a SDR receiving samples and enable the TCP 
+server control, the application will do the rest
 ### For Windows:
 #### Prerequisites
 ###### Python 3 :
