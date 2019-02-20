@@ -4,7 +4,6 @@
 build
 __pycache__
 .vscode
-*.ui
 ex.py
 ss.py
 *.spec

@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mrfsqt</class>
+ <widget class="QWidget" name="mrfsqt">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>634</width>
+    <height>265</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>330</width>
+    <height>250</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>3300</width>
+    <height>2500</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Extra Functions</string>
+  </property>
+  <widget class="QSpinBox" name="delay">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>140</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Do you like time?</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
+   </property>
+   <property name="maximum">
+    <number>10000</number>
+   </property>
+   <property name="value">
+    <number>500</number>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="steps">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>110</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>How many ?</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
+   </property>
+   <property name="maximum">
+    <number>1000</number>
+   </property>
+   <property name="value">
+    <number>5</number>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="endSweep">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>50</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Sweep End Freq</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
+   </property>
+   <property name="decimals">
+    <number>6</number>
+   </property>
+   <property name="minimum">
+    <double>85.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>5400.000000000000000</double>
+   </property>
+   <property name="value">
+    <double>88.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="sweepButton">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>50</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Start Freq Sweep</string>
+   </property>
+   <property name="text">
+    <string>Sweep</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>80</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Step KHz</string>
+   </property>
+   <property name="buddy">
+    <cstring>stepSize</cstring>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sweep End</string>
+   </property>
+   <property name="buddy">
+    <cstring>endSweep</cstring>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="stepSize">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>80</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Step Size</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
+   </property>
+   <property name="decimals">
+    <number>6</number>
+   </property>
+   <property name="minimum">
+    <double>0.001000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>50000.000000000000000</double>
+   </property>
+   <property name="singleStep">
+    <double>5.000000000000000</double>
+   </property>
+   <property name="value">
+    <double>250.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>110</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Steps</string>
+   </property>
+   <property name="buddy">
+    <cstring>steps</cstring>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>140</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Delay ms</string>
+   </property>
+   <property name="buddy">
+    <cstring>delay</cstring>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>170</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Morse Code</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="morseButton">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>170</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Message at Freq</string>
+   </property>
+   <property name="text">
+    <string>Send Msg</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="morseInput">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>170</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Please enter message</string>
+   </property>
+   <property name="locale">
+    <locale language="English" country="SouthAfrica"/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="readRegButton">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>200</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Read Device Register</string>
+   </property>
+   <property name="text">
+    <string>Read Reg</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>200</y>
+     <width>51</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Register</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="readReg">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>200</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Shall I read the device?</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="startSweep">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>20</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Sweep End Freq</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
+   </property>
+   <property name="decimals">
+    <number>6</number>
+   </property>
+   <property name="minimum">
+    <double>85.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>5399.000000000000000</double>
+   </property>
+   <property name="value">
+    <double>85.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sweep Start</string>
+   </property>
+   <property name="buddy">
+    <cstring>endSweep</cstring>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>45</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Current</string>
+   </property>
+   <property name="buddy">
+    <cstring>powerInput</cstring>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="powerInput">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>45</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Set Device Current</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
+   </property>
+   <property name="maximum">
+    <number>7</number>
+   </property>
+   <property name="value">
+    <number>1</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="startLabel">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>15</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Device Freq</string>
+   </property>
+   <property name="buddy">
+    <cstring>startFreq</cstring>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="startFreq">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>15</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <kerning>true</kerning>
+    </font>
+   </property>
+   <property name="toolTip">
+    <string>Set the device freq</string>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
+   </property>
+   <property name="decimals">
+    <number>6</number>
+   </property>
+   <property name="minimum">
+    <double>85.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>5400.000000000000000</double>
+   </property>
+   <property name="singleStep">
+    <double>0.000003000000000</double>
+   </property>
+   <property name="value">
+    <double>85.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="biasOff">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>45</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Set BiasTee Off</string>
+   </property>
+   <property name="text">
+    <string>Bias Off</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="biasOn_3">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>100</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Set BiasTee On</string>
+   </property>
+   <property name="text">
+    <string>Always On</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="biasOn_2">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>100</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Set BiasTee On</string>
+   </property>
+   <property name="text">
+    <string>60 sec</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="genButton">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>75</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Set Generator Mode</string>
+   </property>
+   <property name="text">
+    <string>Gen</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="mixButton">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>75</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Set Mixer Mode</string>
+   </property>
+   <property name="text">
+    <string>Mixer</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="biasOn">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>15</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Set BiasTee On</string>
+   </property>
+   <property name="text">
+    <string>Bias On</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>75</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Functions</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="noiseButton">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>75</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Set Noise Mode</string>
+   </property>
+   <property name="text">
+    <string>Noise</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_10">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>105</y>
+     <width>90</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LCD</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="biasOn_4">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>100</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>80</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="toolTip">
+    <string>Set BiasTee On</string>
+   </property>
+   <property name="text">
+    <string>10 sec</string>
+   </property>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>startSweep</tabstop>
+  <tabstop>endSweep</tabstop>
+  <tabstop>stepSize</tabstop>
+  <tabstop>steps</tabstop>
+  <tabstop>delay</tabstop>
+  <tabstop>morseInput</tabstop>
+  <tabstop>readReg</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

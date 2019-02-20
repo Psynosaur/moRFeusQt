@@ -5,6 +5,7 @@ Simple cross platform tool for controlling moRFeus mixer/RF generator via the HI
 Product information : https://othernet.is/products/morfeus-1
 
 ##### Features currently in development 
+- [ ] New GUI for separation of concerns 
 - [x] Multi Device Support
 - [x] TCP Support Basic Sending to GQRX
 - [x] Draws a power reading plot from GQRX

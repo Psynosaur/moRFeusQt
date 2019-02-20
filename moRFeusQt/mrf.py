@@ -63,6 +63,9 @@ class MoRFeus(object):
     def initdevice(cls, vid=vendorID, pid=productID, index=0):
             mrfdevice = hid.enumerate(vid, pid)[index]
             device = hid.device()
+            # Sometimes the device doesn't close properly and isn't available afterwards
+            # This call closes it before opening it
+            # device.close()
             # moRFeus VendorID/ProductID
             device.open_path(mrfdevice['path'])
             device.set_nonblocking(0)
@@ -180,7 +183,7 @@ class MoRFeus(object):
                         # print(freq, powah)
                     self.message(self.SET, self.funcFrequency, start)
                     endtime = t.time()
-                    sock.SetFreq("{0:8.6f}".format(start_freq))
+                    print(sock.SetFreq("{0:8.6f}".format(start_freq)))
                     sock.Close()
                     dwelltime = (delay, 'ms dwell', (endtime - starttime), 'sec',
                                  (step / 1000), 'MHz')

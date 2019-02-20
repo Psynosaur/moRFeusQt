@@ -103,8 +103,8 @@ class GqRX(object):
 
     def SetFreq(self, msg) -> bool:
         tcp = self.IsConnected()
-        message = 'F ' + msg
         if tcp:
+            message = 'F ' + msg
             tcp.send(str.encode(message))
             data = tcp.recv(self.BUFFER_SIZE)
             tcp.close()
@@ -114,25 +114,25 @@ class GqRX(object):
 
     def SetSQL(self, msg) -> bool:
         tcp = self.IsConnected()
-        message = 'L SQL ' + msg + '\n'
         if tcp:
+            message = 'L SQL ' + msg + '\n'
             tcp.send(str.encode(message))
             print(message)
             data = tcp.recv(self.BUFFER_SIZE)
             tcp.close()
-            return data
+            return data and True
         else:
             return False
 
     def SetMod(self, mod, bw) -> bool:
         tcp = self.IsConnected()
-        message = 'M ' + (mod + '\n' + bw + '\n')
         if tcp:
+            message = 'M ' + (mod + '\n' + bw + '\n')
             tcp.send(str.encode(message))
             print(message)
             data = tcp.recv(self.BUFFER_SIZE)
             tcp.close()
-            return data
+            return data and True
         else:
             return False
 
