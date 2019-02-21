@@ -28,7 +28,7 @@
     - [ ] All program output would be here or in the console or nowhere
 - [ ] Allow for a custom message to be sent by the user
 - [ ] CSV file save option
-- [ ] Investigate possibility if modulation support with 100ms LO dwell time 
+- [ ] Investigate possibility of modulation support with 100ms LO dwell time 
 - [ ] Save application preferences 
   - [ ] Window positions (with multi device support. . .)
   - [ ] Dont save device settings, that what our getters are for
