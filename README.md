@@ -37,7 +37,7 @@ server control, the application will do the rest
 
 ##### moRFeusQt Installation
 
-    git clone https://github.com/Psynosaur/moRFeus_Qt && cd moRFeus_Qt
+    git clone https://github.com/Psynosaur/moRFeusQt && cd moRFeusQt
 
 ###### Removing sudo requirement for udev usb raw access :
 
