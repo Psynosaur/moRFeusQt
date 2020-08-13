@@ -60,7 +60,7 @@ From : https://brew.sh/
 
 ##### moRFeus_Qt Installation
 
-    $ git clone https://github.com/Psynosaur/moRFeus_Qt && cd moRFeus_Qt
+    $ git clone https://github.com/Psynosaur/moRFeusQt && cd moRFeusQt
     $ python3 setup.py install
     $ moRFeusQt
 
